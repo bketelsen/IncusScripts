@@ -326,3 +326,45 @@ codemods:
   - set
   - install_methods.0.resources.version
   - 12
+- description: Ubuntu 2204 VM OS
+  mod: sjson
+  match: json/ubuntu2204-vm.json
+  args:
+  - set
+  - install_methods.0.resources.os
+  - ubuntu
+- description: Ubuntu VM Version
+  mod: sjson
+  match: json/ubuntu2204-vm.json
+  args:
+  - set
+  - install_methods.0.resources.version
+  - jammy
+- description: Ubuntu 2404 VM OS
+  mod: sjson
+  match: json/ubuntu2404-vm.json
+  args:
+  - set
+  - install_methods.0.resources.os
+  - ubuntu
+- description: Ubuntu 2404 VM Version
+  mod: sjson
+  match: json/ubuntu2404-vm.json
+  args:
+  - set
+  - install_methods.0.resources.version
+  - noble
+- description: Ubuntu 2410 VM OS
+  mod: sjson
+  match: json/ubuntu2410-vm.json
+  args:
+  - set
+  - install_methods.0.resources.os
+  - ubuntu
+- description: Ubuntu 2410 VM Version
+  mod: sjson
+  match: json/ubuntu2410-vm.json
+  args:
+  - set
+  - install_methods.0.resources.version
+  - oracular
