@@ -299,26 +299,9 @@ codemods:
   - start
   - "# Modified by surgeon https://github.com/bketelsen/surgeon"
 - description: Arch VM
-  mod: sed
+  mod: sjson
   match: json/archlinux-vm.json
   args:
-  - "\"os\": null"
-  - "\"os\": \"archlinux\""
-- description: Arch VM
-  mod: sed
-  match: json/archlinux-vm.json
-  args:
-  - "\"version\": null"
-  - "\"version\": \"current\""
-- description: Debian VM
-  mod: sed
-  match: json/debian-vm.json
-  args:
-  - "\"os\": null"
-  - "\"os\": \"debian\""
-- description: Debian VM
-  mod: sed
-  match: json/debian-vm.json
-  args:
-  - "\"version\": null"
-  - "\"version\": \"12\""
+  - set
+  - install_methods.1.resources.os
+  - archlinux
