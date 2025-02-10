@@ -312,3 +312,17 @@ codemods:
   - set
   - install_methods.0.resources.version
   - current
+- description: Debian VM OS
+  mod: sjson
+  match: json/debian-vm.json
+  args:
+  - set
+  - install_methods.0.resources.os
+  - debian
+- description: Debian VM Version
+  mod: sjson
+  match: json/debian-vm.json
+  args:
+  - set
+  - install_methods.0.resources.version
+  - 12
