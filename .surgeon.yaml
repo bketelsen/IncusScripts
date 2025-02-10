@@ -298,10 +298,17 @@ codemods:
   args:
   - start
   - "# Modified by surgeon https://github.com/bketelsen/surgeon"
-- description: Arch VM
+- description: Arch VM OS
   mod: sjson
   match: json/archlinux-vm.json
   args:
   - set
   - install_methods.0.resources.os
   - archlinux
+- description: Arch VM Version
+  mod: sjson
+  match: json/archlinux-vm.json
+  args:
+  - set
+  - install_methods.0.resources.version
+  - current
