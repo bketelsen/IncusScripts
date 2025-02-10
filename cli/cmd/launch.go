@@ -88,15 +88,10 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	launchSettings := NewLaunchSettings(*application, instanceName)
 
 	if application.Type != "ct" {
-		if application.Type == "vm" {
-			// force advanced setup for vm
-			advanced = true
-			launchSettings.VM = true
-			launchSettings.VMSecureBoot = true
-		} else {
-			log.Error("Application type not (yet) supported", "type", application.Type)
-			return errors.New("application type not supported")
-		}
+
+		log.Error("Application type not supported", "type", application.Type)
+		return errors.New("application type not supported")
+
 	}
 
 	var enableSSH bool

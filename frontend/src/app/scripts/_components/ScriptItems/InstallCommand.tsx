@@ -48,7 +48,7 @@ export default function InstallCommand({ item }: { item: Script }) {
             To create a new Incus {item.name}{" "}
             {getDisplayValueFromType(item.type)}, run the command below in a terminal.
             <br />
-            Use "advanced" settings to customize the installation or create a VM.
+            Use advanced settings to customize the installation or create a VM.
           </>
         )}
       </p>
