@@ -46,3 +46,31 @@ func Test_rawURL(t *testing.T) {
 		})
 	}
 }
+
+func Test_validateDiskSize(t *testing.T) {
+	type args struct {
+		size string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{"1GB", args{size: "1GB"}, false},
+		{"1GiB", args{size: "1GiB"}, false},
+		{"1TB", args{size: "1TB"}, false},
+		{"1TiB", args{size: "1TiB"}, false},
+		{"1MB", args{size: "1MB"}, false},
+		{"1MiB", args{size: "1MiB"}, false},
+		{"1", args{size: "1"}, true},
+		{"1MB1", args{size: "1MB1"}, true},
+		{"MB: 3", args{size: "MB: 3"}, true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := validateDiskSize(tt.args.size); (err != nil) != tt.wantErr {
+				t.Errorf("validateDiskSize() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

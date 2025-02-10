@@ -40,6 +40,7 @@ type Resources struct {
 	CPU     int    `json:"cpu,omitempty"`
 	RAM     int    `json:"ram,omitempty"`
 	OS      string `json:"os,omitempty"`
+	HDD     int    `json:"hdd,omitempty"`
 	Version string `json:"version,omitempty"`
 }
 
@@ -78,7 +79,7 @@ type LaunchSettings struct {
 	Image            string            `json:"image,omitempty"`
 	Profiles         []string          `json:"profiles,omitempty"`
 	CPU              int               `json:"cpu,omitempty"`
-	RAM              int               `json:"ram,omitempty"`
+	RAM              string            `json:"ram,omitempty"`
 	VM               bool              `json:"vm,omitempty"`
 	VMRootDiskSize   string            `json:"vm_root_disk_size,omitempty"`
 	RootPassword     string            `json:"root_password,omitempty"`

@@ -58,6 +58,9 @@ func main() {
 	launchCmd := cmdLaunch{global: &globalCmd}
 	app.AddCommand(launchCmd.Command())
 
+	addCmd := cmdAdd{global: &globalCmd}
+	app.AddCommand(addCmd.Command())
+
 	searchCmd := cmdSearch{global: &globalCmd}
 	app.AddCommand(searchCmd.Command())
 

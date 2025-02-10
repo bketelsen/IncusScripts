@@ -53,7 +53,14 @@ func (c *cmdLaunch) Command() *cobra.Command {
 	cmd.Args = cobra.ExactArgs(2)
 
 	cmd.Long =
-		`launch a container`
+		`launch a container
+
+Launch a container from the catalog. The application name is the name of the application in the catalog.
+The instance name is the name you want to give the container. The instance name must be unique.
+
+Choose "Yes" to use default settings, or "No" to customize the launch settings.
+
+All containers can be launched as a VM. The default is to launch as a container.`
 	cmd.RunE = c.Run
 
 	return cmd
@@ -77,7 +84,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	}
 
 	if application.Type != "ct" {
-		log.Error("Application type not supported", "type", application.Type)
+		log.Error("Application type not (yet) supported", "type", application.Type)
 		return errors.New("application type not supported")
 	}
 
@@ -157,6 +164,40 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		}
 		launchSettings.Image = "images:" + application.InstallMethods[installMethod].Resources.Image()
 		launchSettings.InstallMethod = installMethod
+
+		// VM Root Disk Size
+		// incus launch images:ubuntu/22.04 ubuntu-vm-big --vm --device root,size=30GiB
+		defaultDiskSize := fmt.Sprintf("%dGiB", application.InstallMethods[installMethod].Resources.HDD)
+		defaultMemory := fmt.Sprintf("%dMiB", application.InstallMethods[installMethod].Resources.RAM)
+		form = huh.NewForm(
+			huh.NewGroup(
+				huh.NewInput().
+					Value(&launchSettings.VMRootDiskSize).
+					Title("Root Disk Size").
+					Placeholder(defaultDiskSize).
+					Description("Size of the root disk for the VM.").
+					Validate(validateDiskSize),
+
+				huh.NewSelect[int]().
+					Value(&launchSettings.CPU).
+					Title("Number of CPU Cores").
+					Options(huh.NewOptions(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)...).
+					Description("Number of CPU cores to assign the vm."),
+
+				huh.NewInput().
+					Value(&launchSettings.RAM).
+					Title("VM Memory").
+					Placeholder(defaultMemory).
+					Description("Memory amount to assign the VM.").
+					Validate(validateDiskSize),
+			),
+		).WithAccessible(accessible)
+
+		err = form.Run()
+		if err != nil {
+			fmt.Println("form error:", err)
+			os.Exit(1)
+		}
 
 		// choose ssh options
 		form = huh.NewForm(
@@ -305,6 +346,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		os.Exit(1)
 	}
 	extraConfigs := make(map[string]string)
+	deviceOverrides := make(map[string]map[string]string)
 	// set environment variables
 	// SSH Enable
 	if launchSettings.EnableSSH {
@@ -352,6 +394,12 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	// Disable ipv6
 	extraConfigs["environment.DISABLEIPV6"] = "yes" // todo: make this a form option
 
+	if launchSettings.VM {
+		deviceOverrides["root"] = map[string]string{"size": launchSettings.VMRootDiskSize}
+		extraConfigs["limits.cpu"] = strconv.Itoa(launchSettings.CPU)
+		extraConfigs["limits.memory"] = launchSettings.RAM
+	}
+
 	var funcScript []byte
 	if application.InstallMethods[launchSettings.InstallMethod].Resources.OS == "alpine" {
 		funcScript, err = downloadRaw(repository, "misc", "alpine-install.func")
@@ -371,7 +419,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 
 	createInstance := func() {
 		// create the instance
-		err := c.global.client.Launch(launchSettings.Image, launchSettings.Name, launchSettings.Profiles, extraConfigs, launchSettings.VM, false)
+		err := c.global.client.Launch(launchSettings.Image, launchSettings.Name, launchSettings.Profiles, extraConfigs, deviceOverrides, launchSettings.VM, false)
 		if err != nil {
 			fmt.Println("Error creating instance:", err)
 			os.Exit(1)
