@@ -9,8 +9,6 @@ source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
-setting_up_container
-network_check
 
 
 msg_info "Cleaning up"

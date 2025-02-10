@@ -29,6 +29,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/charmbracelet/glamour"
@@ -91,6 +92,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 			// force advanced setup for vm
 			advanced = true
 			launchSettings.VM = true
+			launchSettings.VMSecureBoot = true
 		} else {
 			log.Error("Application type not (yet) supported", "type", application.Type)
 			return errors.New("application type not supported")
@@ -386,10 +388,16 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	// Disable ipv6
 	extraConfigs["environment.DISABLEIPV6"] = "yes" // todo: make this a form option
 
+	if disableSecureBoot(application.InstallMethods[launchSettings.InstallMethod].Resources.OS) {
+		launchSettings.VMSecureBoot = false
+	}
 	if launchSettings.VM {
 		deviceOverrides["root"] = map[string]string{"size": launchSettings.VMRootDiskSize}
 		extraConfigs["limits.cpu"] = strconv.Itoa(launchSettings.CPU)
 		extraConfigs["limits.memory"] = launchSettings.RAM
+		if !launchSettings.VMSecureBoot {
+			extraConfigs["security.secureboot"] = "false"
+		}
 	}
 
 	var funcScript []byte
@@ -494,6 +502,13 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		log.Error("Instance creation cancelled")
 	}
 	return nil
+}
+
+func disableSecureBoot(imagename string) bool {
+	if strings.Contains(imagename, "archlinux") {
+		return true
+	}
+	return false
 }
 
 func getAppMetadata(app string) (*Application, error) {
