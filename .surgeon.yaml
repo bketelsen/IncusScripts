@@ -273,7 +273,7 @@ codemods:
   match: json/*.json
   args:
   - Execute within an existing LXC Console
-  - Execute within an existing Incus Container
+  - Execute in Incus host console/shell
 - description: FE Landing
   mod: sed
   match: frontend/src/app/page.tsx
