@@ -20,7 +20,7 @@ const ITEMS_PER_PAGE = 3;
 export const getDisplayValueFromType = (type: string) => {
   switch (type) {
     case "ct":
-      return "CONTAINER";
+      return "INSTANCE";
     case "vm":
       return "VM";
     case "misc":
@@ -35,7 +35,7 @@ export function LatestScripts({ items }: { items: Category[] }) {
 
   const latestScripts = useMemo(() => {
     if (!items) return [];
-    
+
     const scripts = items.flatMap((category) => category.scripts || []);
 
     // Filter out duplicates by slug
@@ -59,7 +59,7 @@ export function LatestScripts({ items }: { items: Category[] }) {
   const goToPreviousPage = () => {
     setPage((prevPage) => prevPage - 1);
   };
-  
+
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const endIndex = page * ITEMS_PER_PAGE;
 

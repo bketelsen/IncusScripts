@@ -31,7 +31,8 @@ const getScripts = async () => {
       return script;
     }),
   );
-  return scripts;
+  const filteredScripts = scripts.filter((script) => !script.type.includes("vm"));
+  return filteredScripts;
 };
 
 export async function GET() {
