@@ -82,38 +82,47 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	if err != nil {
 		return err
 	}
-
-	if application.Type != "ct" {
-		log.Error("Application type not (yet) supported", "type", application.Type)
-		return errors.New("application type not supported")
-	}
+	var advanced bool
 
 	launchSettings := NewLaunchSettings(*application, instanceName)
-	var advanced bool
+
+	if application.Type != "ct" {
+		if application.Type == "vm" {
+			// force advanced setup for vm
+			advanced = true
+			launchSettings.VM = true
+		} else {
+			log.Error("Application type not (yet) supported", "type", application.Type)
+			return errors.New("application type not supported")
+		}
+	}
+
 	var enableSSH bool
 	var addGPU bool
 	var profiles []string
 
-	form := huh.NewForm(
-		huh.NewGroup(huh.NewNote().
-			Title("Incus Scripts").
-			Description(fmt.Sprintf("Launch a _%s_ container\n\n%s\n\n", app, application.Description)).
-			Next(true).
-			NextLabel("Get started"),
-		),
-		huh.NewGroup(
-			huh.NewConfirm().
-				Title("Use Default Settings?").
-				Affirmative("No").
-				Negative("Yes").
-				Value(&advanced),
-		),
-	).WithAccessible(accessible)
-
-	err = form.Run()
+	proceed, err := launchForm(app, application.Description, accessible)
 	if err != nil {
-		fmt.Println("form error:", err)
-		os.Exit(1)
+		return err
+	}
+	if !proceed {
+		log.Error("Instance creation cancelled")
+		return nil
+	}
+
+	// if it isn't a vm specific application, ask if they want to use the advanced form
+	if !launchSettings.VM {
+		advanced, err = advancedForm(accessible)
+		if err != nil {
+			return err
+		}
+		if advanced {
+			// if they want to use the advanced form, ask if they want to run the instance a vm
+			launchSettings.VM, err = vmForm(accessible)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	if advanced {
@@ -126,7 +135,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 
 				huh.NewGroup(
 					huh.NewSelect[int]().
-						Title("Choose Operating System").
+						Title("Choose OS Option").
 						Options(
 							huh.NewOption(application.InstallMethods[0].Resources.OS, 0),
 							huh.NewOption(application.InstallMethods[1].Resources.OS, 1),
@@ -140,67 +149,50 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 				fmt.Println("form error:", err)
 				os.Exit(1)
 			}
-			launchSettings.Image = "images:" + application.InstallMethods[installMethod].Resources.Image()
-			launchSettings.InstallMethod = installMethod
 
 		}
 
-		// select install method
-		form := huh.NewForm(
-
-			huh.NewGroup(
-				huh.NewConfirm().
-					Title("Launch As VM?").
-					Value(&launchSettings.VM).
-					Affirmative("Yes").
-					Negative("No"),
-			),
-		).WithAccessible(accessible)
-
-		err = form.Run()
-		if err != nil {
-			fmt.Println("form error:", err)
-			os.Exit(1)
-		}
 		launchSettings.Image = "images:" + application.InstallMethods[installMethod].Resources.Image()
 		launchSettings.InstallMethod = installMethod
 
-		// VM Root Disk Size
-		// incus launch images:ubuntu/22.04 ubuntu-vm-big --vm --device root,size=30GiB
-		defaultDiskSize := fmt.Sprintf("%dGiB", application.InstallMethods[installMethod].Resources.HDD)
-		defaultMemory := fmt.Sprintf("%dMiB", application.InstallMethods[installMethod].Resources.RAM)
-		form = huh.NewForm(
-			huh.NewGroup(
-				huh.NewInput().
-					Value(&launchSettings.VMRootDiskSize).
-					Title("Root Disk Size").
-					Placeholder(defaultDiskSize).
-					Description("Size of the root disk for the VM.").
-					Validate(validateDiskSize),
+		if launchSettings.VM {
+			// VM Root Disk Size
+			// incus launch images:ubuntu/22.04 ubuntu-vm-big --vm --device root,size=30GiB
+			defaultDiskSize := fmt.Sprintf("%dGiB", application.InstallMethods[installMethod].Resources.HDD)
+			defaultMemory := fmt.Sprintf("%dMiB", application.InstallMethods[installMethod].Resources.RAM)
+			form := huh.NewForm(
+				huh.NewGroup(
+					huh.NewInput().
+						Value(&launchSettings.VMRootDiskSize).
+						Title("Root Disk Size").
+						Placeholder(defaultDiskSize).
+						Description("Size of the root disk for the VM.").
+						Validate(validateDiskSize),
 
-				huh.NewSelect[int]().
-					Value(&launchSettings.CPU).
-					Title("Number of CPU Cores").
-					Options(huh.NewOptions(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)...).
-					Description("Number of CPU cores to assign the vm."),
+					huh.NewSelect[int]().
+						Value(&launchSettings.CPU).
+						Title("Number of CPU Cores").
+						Options(huh.NewOptions(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)...).
+						Description("Number of CPU cores to assign the vm."),
 
-				huh.NewInput().
-					Value(&launchSettings.RAM).
-					Title("VM Memory").
-					Placeholder(defaultMemory).
-					Description("Memory amount to assign the VM.").
-					Validate(validateDiskSize),
-			),
-		).WithAccessible(accessible)
+					huh.NewInput().
+						Value(&launchSettings.RAM).
+						Title("VM Memory").
+						Placeholder(defaultMemory).
+						Description("Memory amount to assign the VM.").
+						Validate(validateDiskSize),
+				),
+			).WithAccessible(accessible)
 
-		err = form.Run()
-		if err != nil {
-			fmt.Println("form error:", err)
-			os.Exit(1)
+			err = form.Run()
+			if err != nil {
+				fmt.Println("form error:", err)
+				os.Exit(1)
+			}
 		}
 
 		// choose ssh options
-		form = huh.NewForm(
+		form := huh.NewForm(
 			huh.NewGroup(
 				huh.NewConfirm().
 					Title("Pass through GPU?").
@@ -330,7 +322,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		launchSettings.Profiles = profiles
 
 	}
-	form = huh.NewForm(
+	form := huh.NewForm(
 		huh.NewGroup(
 			huh.NewConfirm().
 				Title("Create instance?").

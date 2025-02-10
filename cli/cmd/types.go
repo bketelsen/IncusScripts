@@ -82,6 +82,7 @@ type LaunchSettings struct {
 	RAM              string            `json:"ram,omitempty"`
 	VM               bool              `json:"vm,omitempty"`
 	VMRootDiskSize   string            `json:"vm_root_disk_size,omitempty"`
+	VMSecureBoot     bool              `json:"vm_secure_boot,omitempty"`
 	RootPassword     string            `json:"root_password,omitempty"`
 	EnableSSH        bool              `json:"enable_ssh,omitempty"`
 	SSHRootPassword  bool              `json:"ssh_root_password,omitempty"`
