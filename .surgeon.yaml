@@ -303,5 +303,5 @@ codemods:
   match: json/archlinux-vm.json
   args:
   - set
-  - install_methods.1.resources.os
+  - install_methods.0.resources.os
   - archlinux
