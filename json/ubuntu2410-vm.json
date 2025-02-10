@@ -21,8 +21,8 @@
                 "cpu": 2,
                 "ram": 2048,
                 "hdd": 8,
-                "os": null,
-                "version": null
+                "os": "ubuntu",
+                "version": "oracular"
             }
         }
     ],
