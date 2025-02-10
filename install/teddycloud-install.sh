@@ -61,4 +61,5 @@ $STD apt-get --yes autoremove
 $STD apt-get --yes autoclean
 rm -rf "teddycloud.amd64.release_v${VERSION}.zip"
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

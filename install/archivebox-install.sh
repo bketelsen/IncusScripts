@@ -48,8 +48,8 @@ $STD apt-get install -y nodejs
 msg_ok "Installed Node.js"
 
 msg_info "Installing Playwright"
-$STD pip install playwright
-$STD playwright install-deps chromium
+$STD pip install playwright 
+$STD playwright install-deps chromium 
 msg_ok "Installed Playwright"
 
 msg_info "Installing Chromium and ArchiveBox"
@@ -73,10 +73,10 @@ expect "Email address"
 send "\r"
 
 expect "Password"
-send "incus-scripts\r"
+send "helper-scripts.com\r"
 
 expect "Password (again)"
-send "incus-scripts\r"
+send "helper-scripts.com\r"
 
 expect eof
 EOF
@@ -107,4 +107,5 @@ msg_info "Cleaning up"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

@@ -41,4 +41,5 @@ rm -rf /opt/vikunja-$RELEASE-amd64.deb
 $STD apt-get autoremove
 $STD apt-get autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

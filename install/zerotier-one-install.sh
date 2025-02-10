@@ -16,12 +16,13 @@ msg_info "Installing Dependencies"
 $STD apt-get install -y \
   curl \
   mc \
-  sudo
+  sudo \
+  gnupg
 msg_ok "Installed Dependencies"
 
 msg_info "Setting up Zerotier-One"
 curl -s 'https://raw.githubusercontent.com/zerotier/ZeroTierOne/main/doc/contact%40zerotier.com.gpg' | gpg --import && \
-if z="$(curl -s 'https://install.zerotier.com/' | gpg)"; then
+if z="$(curl -s 'https://install.zerotier.com/' | gpg)"; then 
 echo "$z" | sudo bash
 fi
 msg_ok "Setup Zerotier-One"

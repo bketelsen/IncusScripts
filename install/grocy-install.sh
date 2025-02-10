@@ -69,4 +69,5 @@ $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 rm -rf /root/grocy_${latest}.zip
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

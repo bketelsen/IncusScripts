@@ -62,7 +62,7 @@ After=network.target
 
 [Service]
 Type=exec
-WorkingDirectory=/opt/grist
+WorkingDirectory=/opt/grist 
 ExecStart=/usr/bin/yarn run start:prod
 EnvironmentFile=-/opt/grist/.env
 

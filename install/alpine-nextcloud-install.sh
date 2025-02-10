@@ -196,4 +196,5 @@ msg_ok "Finished Nextcloud Setup-Wizard"
 
 motd_ssh
 customize
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

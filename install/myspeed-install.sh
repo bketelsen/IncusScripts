@@ -58,7 +58,7 @@ ExecStart=/usr/bin/node server
 Restart=always
 User=root
 Environment=NODE_ENV=production
-WorkingDirectory=/opt/myspeed
+WorkingDirectory=/opt/myspeed 
 
 [Install]
 WantedBy=multi-user.target

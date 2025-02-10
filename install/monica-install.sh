@@ -67,7 +67,7 @@ $STD composer install --no-dev -o --no-interaction
 $STD yarn install
 $STD yarn run production
 $STD php artisan key:generate
-$STD php artisan setup:production --email=admin@incus-scripts.com --password=incus-scripts.com --force
+$STD php artisan setup:production --email=admin@helper-scripts.com --password=helper-scripts.com --force
 chown -R www-data:www-data /opt/monica
 chmod -R 775 /opt/monica/storage
 echo "${RELEASE}" >/opt/${APPLICATION}_version.txt
@@ -102,4 +102,5 @@ rm -rf "/opt/monica-v${RELEASE}.tar.bz2"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

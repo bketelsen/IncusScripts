@@ -39,4 +39,5 @@ msg_info "Cleaning up"
 $STD apt-get autoremove >/dev/null
 $STD apt-get autoclean >/dev/null
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

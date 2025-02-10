@@ -59,4 +59,5 @@ rm -rf /opengist${RELEASE}-linux-amd64.tar.gz
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon
