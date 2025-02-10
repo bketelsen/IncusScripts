@@ -12,7 +12,10 @@ function CustomArrowRightIcon() {
   return <ArrowRightIcon className="h-4 w-4" width={1} />;
 }
 
-const getInstallCommand = (slug?: string, isAlpine = false) => {
+const getInstallCommand = (slug?: string, scripttype?: string,  isAlpine = false,) => {
+  if (scripttype == "misc") {
+    return `scripts-cli add ${slug} your-instance-name`;
+  }
   return `scripts-cli launch ${slug} your-instance-name`;
 };
 
@@ -73,13 +76,13 @@ export default function InstallCommand({ item }: { item: Script }) {
           <TabsContent value="default">
             {renderInstructions()}
             <CodeCopyButton>
-              {getInstallCommand(item.slug)}
+              {getInstallCommand(item.slug ,item.type)}
             </CodeCopyButton>
           </TabsContent>
           <TabsContent value="alpine">
             {renderInstructions(true)}
             <CodeCopyButton>
-              {getInstallCommand(alpineScript.script, true)}
+              {getInstallCommand(alpineScript.script,  item.type, true)}
             </CodeCopyButton>
           </TabsContent>
         </Tabs>
@@ -87,7 +90,7 @@ export default function InstallCommand({ item }: { item: Script }) {
         <>
           {renderInstructions()}
           <CodeCopyButton>
-            {getInstallCommand(item.slug)}
+            {getInstallCommand(item.slug,item.type)}
           </CodeCopyButton>
                     	<Link href="/install">
 								<Button
