@@ -157,12 +157,14 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 			// incus launch images:ubuntu/22.04 ubuntu-vm-big --vm --device root,size=30GiB
 			defaultDiskSize := fmt.Sprintf("%dGiB", application.InstallMethods[installMethod].Resources.HDD)
 			defaultMemory := fmt.Sprintf("%dMiB", application.InstallMethods[installMethod].Resources.RAM)
+			launchSettings.VMRootDiskSize = defaultDiskSize
+			launchSettings.CPU = application.InstallMethods[installMethod].Resources.CPU
+			launchSettings.RAM = defaultMemory
 			form := huh.NewForm(
 				huh.NewGroup(
 					huh.NewInput().
 						Value(&launchSettings.VMRootDiskSize).
 						Title("Root Disk Size").
-						Placeholder(defaultDiskSize).
 						Description("Size of the root disk for the VM.").
 						Validate(validateDiskSize),
 
