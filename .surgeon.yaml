@@ -23,6 +23,7 @@ ignorelist:
 - prefix: json/fstrim.json
 - prefix: json/host-backup.json
 - prefix: json/kernel-clean.json
+- prefix: json/opnsense-vm.json
 - prefix: json/kernel-pin.json
 - prefix: json/lxc-delete.json
 - prefix: json/microcode.json
