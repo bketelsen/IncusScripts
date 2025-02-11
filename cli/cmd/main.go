@@ -37,7 +37,12 @@ func main() {
 	app.Use = "scripts-cli"
 	app.Short = "Launch incus stuff"
 	app.Long =
-		`community scripts for incus`
+		`community scripts for incus
+
+See script details and more documentation at https://bketelsen.github.io/IncusScripts/
+
+Support information at https://github.com/bketelsen/IncusScripts/
+`
 	app.SilenceUsage = true
 	app.SilenceErrors = true
 	app.CompletionOptions = cobra.CompletionOptions{HiddenDefaultCmd: true}
