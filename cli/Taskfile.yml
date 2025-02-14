@@ -12,7 +12,7 @@ tasks:
     silent: true
   install:
     cmds:
-      - go install .
+      - go install ./cmd
     silent: true
   clean:
     cmds:
