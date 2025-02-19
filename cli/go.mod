@@ -3,7 +3,7 @@ module github.com/bketelsen/IncusScripts/cli
 go 1.23.6
 
 require (
-	github.com/bketelsen/inclient v0.0.4
+	github.com/bketelsen/inclient v0.0.5
 	github.com/charmbracelet/glamour v0.8.0
 	github.com/charmbracelet/huh v0.6.0
 	github.com/charmbracelet/huh/spinner v0.0.0-20250207133237-2eba4f31bf81

@@ -77,6 +77,7 @@ type ExecuteContext struct {
 type LaunchSettings struct {
 	Name             string            `json:"name,omitempty"`
 	Image            string            `json:"image,omitempty"`
+	Network          string            `json:"network,omitempty"`
 	Profiles         []string          `json:"profiles,omitempty"`
 	CPU              int               `json:"cpu,omitempty"`
 	RAM              string            `json:"ram,omitempty"`

@@ -97,6 +97,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	var enableSSH bool
 	var addGPU bool
 	var profiles []string
+	var validBridges []string
 
 	proceed, err := launchForm(app, application.Description, accessible)
 	if err != nil {
@@ -105,6 +106,16 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	if !proceed {
 		log.Error("Instance creation cancelled")
 		return nil
+	}
+	networks, err := c.global.client.Networks(context.Background())
+	if err != nil {
+		return err
+	}
+	for _, net := range networks {
+		if net.Type == "bridge" {
+			validBridges = append(validBridges, net.Name)
+		}
+
 	}
 
 	// if it isn't a vm specific application, ask if they want to use the advanced form
@@ -288,6 +299,40 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 			launchSettings.SSHAuthorizedKey = string(bb)
 		}
 
+		var chooseBridge bool
+		// choose advanced network options
+		form = huh.NewForm(
+			huh.NewGroup(
+				huh.NewConfirm().
+					Title("Choose a bridge?").
+					Value(&chooseBridge).
+					Affirmative("Yes").
+					Negative("No"),
+			),
+		).WithAccessible(accessible)
+
+		err = form.Run()
+		if err != nil {
+			fmt.Println("form error:", err)
+			os.Exit(1)
+		}
+
+		if chooseBridge {
+			form = huh.NewForm(
+				huh.NewGroup(
+					huh.NewSelect[string]().
+						Value(&launchSettings.Network).
+						Title("Choose Network Bridge").
+						Options(huh.NewOptions[string](validBridges...)...).
+						Description("Select an existing network bridge for the instance."),
+				),
+			).WithAccessible(accessible)
+			err = form.Run()
+			if err != nil {
+				fmt.Println("form error:", err)
+				os.Exit(1)
+			}
+		}
 		// select profiles
 		profileList, err := c.global.client.ProfileNames(context.Background())
 		if err != nil {
@@ -303,13 +348,16 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		// add "default" profile back at the beginning
 		profileList = append([]string{"default"}, profileList...)
 
+		var chooseProfiles bool
+		// choose advanced network options
 		form = huh.NewForm(
 			huh.NewGroup(
-				huh.NewMultiSelect[string]().
-					Options(huh.NewOptions(profileList...)...).
-					Title("Select Additional Incus Profiles").
-					Value(&profiles).
-					Description("*default* profile should usually be included."),
+				huh.NewConfirm().
+					Title("Choose incus profiles?").
+					Value(&chooseProfiles).
+					Affirmative("Yes").
+					Negative("No").
+					Description("Select NO to use only the default profile."),
 			),
 		).WithAccessible(accessible)
 
@@ -317,6 +365,23 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		if err != nil {
 			fmt.Println("form error:", err)
 			os.Exit(1)
+		}
+		if chooseProfiles {
+			form = huh.NewForm(
+				huh.NewGroup(
+					huh.NewMultiSelect[string]().
+						Options(huh.NewOptions(profileList...)...).
+						Title("Select Additional Incus Profiles").
+						Value(&profiles).
+						Description("*default* profile should usually be included."),
+				),
+			).WithAccessible(accessible)
+
+			err = form.Run()
+			if err != nil {
+				fmt.Println("form error:", err)
+				os.Exit(1)
+			}
 		}
 		launchSettings.Profiles = profiles
 
@@ -416,7 +481,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 
 	createInstance := func() {
 		// create the instance
-		err := c.global.client.Launch(launchSettings.Image, launchSettings.Name, launchSettings.Profiles, extraConfigs, deviceOverrides, launchSettings.VM, false)
+		err := c.global.client.Launch(launchSettings.Image, launchSettings.Name, launchSettings.Profiles, extraConfigs, deviceOverrides, launchSettings.Network, launchSettings.VM, false)
 		if err != nil {
 			fmt.Println("Error creating instance:", err)
 			os.Exit(1)
