@@ -1361,6 +1361,45 @@
         }
     ]
 },
+"cross-seed": {
+    "name": "cross-seed",
+    "slug": "cross-seed",
+    "categories": [
+        14
+    ],
+    "date_created": "2025-02-07",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 2468,
+    "documentation": "https://www.cross-seed.org/docs/category/basics",
+    "website": "https://www.cross-seed.org/",
+    "logo": "https://www.cross-seed.org/img/cross-seed.svg",
+    "description": "cross-seed is an app designed to help you download torrents that you can cross seed based on your existing torrents. It is designed to match conservatively to minimize manual intervention.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/cross-seed.sh",
+            "resources": {
+                "cpu": 1,
+                "ram": 1024,
+                "hdd": 2,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+      {
+        "text": "After the installation cross-seed will fail to start with an empty configuration. To fix this, edit `~/.cross-seed/config.js` to properly configure cross-seed, then restart by running `systemctl restart cross-seed`.",
+        "type": "info"
+      }
+    ]
+},
 "daemonsync": {
     "name": "Daemon Sync Server",
     "slug": "daemonsync",
@@ -1631,6 +1670,40 @@
             "type": "warning"
         }
     ]
+},
+"docmost": {
+    "name": "Docmost",
+    "slug": "docmost",
+    "categories": [
+        12
+    ],
+    "date_created": "2025-02-18",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 3000,
+    "documentation": "https://docmost.com/docs/installation",
+    "website": "https://docmost.com/",
+    "logo": "https://raw.githubusercontent.com/docmost/docmost/refs/heads/main/apps/client/public/favicon-32x32.png",
+    "description": "Open-source collaborative wiki and documentation software Create, collaborate, and share knowledge seamlessly with Docmost. Ideal for managing your wiki, knowledge-base, documentation and a lot more.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/docmost.sh",
+            "resources": {
+                "cpu": 3,
+                "ram": 3072,
+                "hdd": 7,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": []
 },
 "dotnetaspwebapi": {
    "name":"Dotnet ASP Web API",
@@ -1929,6 +2002,40 @@
         }
     ]
 },
+"excalidraw": {
+    "name": "Excalidraw",
+    "slug": "excalidraw",
+    "categories": [
+        12
+    ],
+    "date_created": "2025-02-12",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 3000,
+    "documentation": "https://docs.excalidraw.com/docs",
+    "website": "https://excalidraw.com/",
+    "logo": "https://docs.excalidraw.com/img/logo.svg",
+    "description": "An open source virtual hand-drawn style whiteboard. Collaborative and end-to-end encrypted.",
+    "install_methods": [
+      {
+        "type": "default",
+        "script": "ct/excalidraw.sh",
+        "resources": {
+          "cpu": 2,
+          "ram": 3072,
+          "hdd": 6,
+          "os": "debian",
+          "version": "12"
+        }
+      }
+    ],
+    "default_credentials": {
+      "username": null,
+      "password": null
+    },
+    "notes": []
+  },
 "fenrus": {
     "name": "Fenrus",
     "slug": "fenrus",
@@ -2142,6 +2249,45 @@
         "password": null
     },
     "notes": []
+},
+"freshrss": {
+  "name": "FreshRSS",
+  "slug": "freshrss",
+  "categories": [
+    12
+  ],
+  "date_created": "2025-02-10",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 80,
+  "documentation": "https://freshrss.github.io/FreshRSS/en/",
+  "website": "https://freshrss.org/",
+  "logo": "https://freshrss.org/images/icon.svg",
+  "description": "FreshRSS is a self-hosted RSS and Atom feed aggregator that lets users collect, organize, and read from multiple sources in one place. It is lightweight, easy to work with, powerful, and customizable.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/freshrss.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 1024,
+        "hdd": 4,
+        "os": "Debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "Database credentials: `cat ~/freshrss.creds`",
+      "type": "info"
+    }
+  ]
 },
 "frigate": {
     "name": "Frigate",
@@ -2478,6 +2624,49 @@
         "password": "admin"
     },
     "notes": []
+},
+"graylog": {
+    "name": "Graylog",
+    "slug": "graylog",
+    "categories": [
+        9
+    ],
+    "date_created": "2025-02-12",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 9000,
+    "documentation": "https://go2docs.graylog.org/current/home.htm",
+    "website": "https://graylog.org/",
+    "logo": "https://graylog.org/wp-content/uploads/2023/11/gl-logo-horiz-all-white-1200w-300x96.png.webp",
+    "description": "Graylog is a free and open log management platform.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/graylog.sh",
+            "resources": {
+                "cpu": 2,
+                "ram": 8192,
+                "hdd": 30,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+        {
+        "text": "Initial Setup credentials: `tail /var/log/graylog-server/server.log` after the server starts for the first time.",
+        "type": "info"
+        },
+        {
+        "text": "Type `cat ~/graylog.creds` to get admin password that you use to log in AFTER the Initial Setup",
+        "type": "info"
+        }
+    ]
 },
 "grist": {
   "name": "Grist",
@@ -3479,6 +3668,45 @@
     },
     "notes": []
   },
+"kometa": {
+    "name": "Kometa",
+    "slug": "kometa",
+    "categories": [
+        13
+    ],
+    "date_created": "2025-02-12",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": null,
+    "documentation": "https://kometa.wiki/en/latest/",
+    "website": "https://github.com/Kometa-Team/Kometa",
+    "logo": "https://kometa.wiki/en/latest/assets/icon.png",
+    "description": "Kometa (formerly known as Plex Meta Manager) is a powerful tool designed to give you complete control over your media libraries",
+    "install_methods": [
+      {
+        "type": "default",
+        "script": "ct/kometa.sh",
+        "resources": {
+          "cpu": 2,
+          "ram": 4096,
+          "hdd": 8,
+          "os": "debian",
+          "version": "12"
+        }
+      }
+    ],
+    "default_credentials": {
+      "username": null,
+      "password": null
+    },
+    "notes": [
+      {
+        "text": "During installation you will be prompted to input your TMDb key, Plex URL and Plex token. Make sure you have them ready.",
+        "type": "info"
+      }
+    ]
+  },
 "komga": {
     "name": "Komga",
     "slug": "komga",
@@ -4159,6 +4387,45 @@
         "password": null
     },
     "notes": []
+},
+"minio": {
+    "name": "MinIO",
+    "slug": "minio",
+    "categories": [
+        8
+    ],
+    "date_created": "2025-02-13",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 9000,
+    "documentation": "https://min.io/docs/minio/linux/index.html",
+    "website": "https://min.io/",
+    "logo": "https://raw.githubusercontent.com/minio/minio/refs/heads/master/.github/logo.svg",
+    "description": "MinIO is a High Performance Object Storage released under GNU Affero General Public License v3.0. It is API compatible with Amazon S3 cloud storage service. Use MinIO to build high performance infrastructure for machine learning, analytics and application data workloads.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/minio.sh",
+            "resources": {
+                "cpu": 1,
+                "ram": 1024,
+                "hdd": 5,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": "minioadmin",
+        "password": null
+    },
+    "notes": [
+        {
+            "text": "Application credentials: `cat ~/minio.creds`",
+            "type": "info"
+        }
+    ]
 },
 "mongodb": {
     "name": "MongoDB",
@@ -4858,6 +5125,40 @@
                 "hdd": 2,
                 "os": "debian",
                 "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": []
+},
+"nxwitness": {
+    "name": "Nx Witness",
+    "slug": "nxwitness",
+    "categories": [
+        15
+    ],
+    "date_created": "2025-02-13",
+    "type": "ct",
+    "updateable": true,
+    "privileged": true,
+    "interface_port": 7001,
+    "documentation": "https://support.networkoptix.com/hc/en-us/articles/360006863413-Access-the-Nx-Witness-User-Manual",
+    "website": "https://www.networkoptix.com/nx-witness",
+    "logo": "https://www.networkoptix.com/hs-fs/hubfs/raw_assets/public/NetworkOptix-NB/images/logo.png?width=300&height=75&name=logo.png",
+    "description": "Nx Witness is a professional video management system (VMS) designed for IP cameras and surveillance systems. It provides real-time video streaming, recording, and remote access with an intuitive user interface. The software supports AI-based video analytics, integrates with third-party security systems, and offers advanced search and event management features. It is used for security monitoring, business intelligence, and large-scale surveillance deployments.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/nxwitness.sh",
+            "resources": {
+                "cpu": 2,
+                "ram": 2048,
+                "hdd": 8,
+                "os": "ubuntu",
+                "version": "24.04"
             }
         }
     ],
@@ -6176,6 +6477,49 @@
     },
     "notes": []
 },
+"prometheus-paperless-ngx-exporter": {
+    "name": "Prometheus Paperless NGX Exporter",
+    "slug": "prometheus-paperless-ngx-exporter",
+    "categories": [
+        9
+    ],
+    "date_created": "2025-02-07",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 3000,
+    "documentation": null,
+    "website": "https://github.com/hansmi/prometheus-paperless-exporter",
+    "logo": "https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/main/resources/logo/web/svg/square.svg",
+    "description": "Prometheus metrics exporter for Paperless-NGX, a document management system transforming physical documents into a searchable online archive. The exporter relies on Paperless' REST API.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/prometheus-paperless-ngx-exporter.sh",
+            "resources": {
+                "cpu": 1,
+                "ram": 256,
+                "hdd": 2,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+        {
+            "text": "Please adjust the Paperless URL in the systemd unit file: /etc/systemd/system/prometheus-paperless-ngx-exporter.service",
+            "type": "info"
+        },
+        {
+            "text": "Please adjust the Paperless authentication token in the configuration file: /etc/prometheus-paperless-ngx-exporter/paperless_auth_token_file",
+            "type": "info"
+        }
+    ]
+},
 "prowlarr": {
     "name": "Prowlarr",
     "slug": "prowlarr",
@@ -6292,6 +6636,45 @@
       }
     ]
   },
+"proxmox-mail-gateway": {
+    "name": "Promox Mail Gateway",
+    "slug": "proxmox-mail-gateway",
+    "categories": [
+            1
+    ],
+    "date_created": "2025-02-04",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 8006,
+    "documentation": "https://pmg.proxmox.com/pmg-docs/pmg-admin-guide.html",
+    "website": "https://www.proxmox.com/en/products/proxmox-mail-gateway/overview",
+    "logo": "https://raw.githubusercontent.com/home-assistant/brands/master/core_integrations/proxmoxve/icon.png",
+    "description": "Proxmox Mail Gateway is the leading open-source email security solution helping you to protect your mail server against all email threats from the moment they emerge.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/proxmox-mail-gateway.sh",
+            "resources": {
+                "cpu": 2,
+                "ram": 4096,
+                "hdd": 10,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": "root",
+        "password": null
+    },
+    "notes": [
+        {
+        "text": "Set a root password if using autologin. This will be the PMG password. `passwd root`",
+        "type": "warning"
+        }
+    ]
+},
 "ps5-mqtt": {
     "name": "PS5-MQTT",
     "slug": "ps5-mqtt",
@@ -6718,6 +7101,45 @@
         "password": null
     },
     "notes": []
+},
+"rustdeskserver": {
+    "name": "RustDesk Server",
+    "slug": "rustdesk-server",
+    "categories": [
+        21
+    ],
+    "date_created": "2025-02-13",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": null,
+    "documentation": "https://rustdesk.com/docs/en/",
+    "website": "https://rustdesk.com/",
+    "logo": "https://rustdesk.com/_astro/logo.BKb61-he.svg",
+    "description": "RustDesk is a full-featured open source remote control alternative for self-hosting and security with minimal configuration.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/rustdeskserver.sh",
+            "resources": {
+                "cpu": 1,
+                "ram": 512,
+                "hdd": 2,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+        {
+            "text": "Check our configuration guide for help: `https://github.com/community-scripts/ProxmoxVE/discussions/2388`",
+            "type": "info"
+        }
+    ]
 },
 "sabnzbd": {
     "name": "SABnzbd",
@@ -7193,6 +7615,45 @@
     },
     "notes": []
 },
+"suwayomi-server": {
+    "name": "Suwayomi-Server",
+    "slug": "suwayomi-server",
+    "categories": [
+        13
+    ],
+    "date_created": "2025-02-07",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 4567,
+    "documentation": "https://github.com/Suwayomi/Suwayomi-Server/wiki",
+    "website": "https://github.com/Suwayomi/Suwayomi-Server",
+    "logo": "https://github.com/Suwayomi/Suwayomi-Server/raw/master/server/src/main/resources/icon/faviconlogo.png",
+    "description": "A free and open source manga reader server that runs extensions built for Mihon (Tachiyomi).",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/suwayomiserver.sh",
+            "resources": {
+                "cpu": 1,
+                "ram": 1024,
+                "hdd": 4,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+        {
+            "text": "This application is conflicting with Kaspersky products. You need to disable Kaspersky in order to use this application.",
+            "type": "info"
+        }
+    ]
+},
 "syncthing": {
     "name": "Syncthing",
     "slug": "syncthing",
@@ -7284,6 +7745,40 @@
                 "cpu": 1,
                 "ram": 512,
                 "hdd": 2,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": []
+},
+"tasmocompiler": {
+    "name": "TasmoCompiler",
+    "slug": "tasmocompiler",
+    "categories": [
+        16
+    ],
+    "date_created": "2025-02-10",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 3000,
+    "documentation": "https://github.com/benzino77/tasmocompiler/blob/master/README.md",
+    "website": "https://github.com/benzino77/tasmocompiler",
+    "logo": "https://github.com/benzino77/tasmocompiler/raw/master/docs/logo/tasmocompiler-symbol.svg",
+    "description": "TasmoCompiler is a simple web GUI which allows you to compile fantastic Tasmota firmware with your own settings.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/tasmocompiler.sh",
+            "resources": {
+                "cpu": 2,
+                "ram": 2048,
+                "hdd": 10,
                 "os": "debian",
                 "version": "12"
             }
@@ -8122,6 +8617,40 @@
         {
             "type": "default",
             "script": "ct/wastebin.sh",
+            "resources": {
+                "cpu": 1,
+                "ram": 1024,
+                "hdd": 4,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": []
+},
+"watcharr": {
+    "name": "Watcharr",
+    "slug": "watcharr",
+    "categories": [
+        13
+    ],
+    "date_created": "2025-02-12",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 3080,
+    "documentation": "https://watcharr.app/docs/introduction",
+    "website": "https://watcharr.app/",
+    "logo": "https://watcharr.app/img/favicon.png",
+    "description": "Open source, self-hostable watched list for all your content with user authentication, modern and clean UI and a very simple setup.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/watcharr.sh",
             "resources": {
                 "cpu": 1,
                 "ram": 1024,
