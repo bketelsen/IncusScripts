@@ -15,7 +15,6 @@ tasks:
   update:
     cmds:
       - echo "Running surgeon..."
-      - git checkout -b "{{.BRANCHNAME}}"
       - surgeon
       - ./misc/index.sh
     silent: true
