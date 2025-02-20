@@ -8,7 +8,9 @@ import (
 
 func launchForm(appName string, description string, accessible bool) (bool, error) {
 	var proceed bool
+
 	form := huh.NewForm(
+
 		huh.NewGroup(huh.NewNote().
 			Title("Incus Scripts").
 			Description(fmt.Sprintf("Launch a _%s_ instance\n\n%s\n\n", appName, description)),
@@ -29,12 +31,13 @@ func launchForm(appName string, description string, accessible bool) (bool, erro
 }
 func advancedForm(accessible bool) (bool, error) {
 	var advanced bool
+
 	form := huh.NewForm(
 		huh.NewGroup(
 			huh.NewConfirm().
-				Title("Use Default Settings?").
-				Affirmative("No").
-				Negative("Yes").
+				Title("Use Advanced Settings?").
+				Affirmative("Yes").
+				Negative("No").
 				Value(&advanced),
 		),
 	).WithAccessible(accessible)

@@ -244,7 +244,7 @@
           "resources": {
               "cpu": 1,
               "ram": 256,
-              "hdd": 0.2,
+              "hdd": 1,
               "os": "alpine",
               "version": "3.21"
           }
@@ -278,7 +278,7 @@
             "resources": {
                 "cpu": 1,
                 "ram": 512,
-                "hdd": 0.1,
+                "hdd": 1,
                 "os": "alpine",
                 "version": "3.21"
             }
@@ -8548,7 +8548,7 @@
             "resources": {
                 "cpu": 1,
                 "ram": 256,
-                "hdd": 0.5,
+                "hdd": 1,
                 "os": "alpine",
                 "version": "3.21"
             }
@@ -9131,7 +9131,7 @@
             "resources": {
                 "cpu": 1,
                 "ram": 256,
-                "hdd": 0.3,
+                "hdd": 1,
                 "os": "alpine",
                 "version": "3.21"
             }

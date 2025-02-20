@@ -567,10 +567,8 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 }
 
 func disableSecureBoot(imagename string) bool {
-	if strings.Contains(imagename, "archlinux") {
-		return true
-	}
-	return false
+	return strings.Contains(imagename, "archlinux")
+
 }
 
 func getAppMetadata(app string) (*Application, error) {

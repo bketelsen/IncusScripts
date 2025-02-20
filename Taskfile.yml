@@ -18,3 +18,10 @@ tasks:
       - surgeon
       - ./misc/index.sh
     silent: true
+
+
+  index:
+    cmds:
+      - echo "Creating index..."
+      - ./misc/index.sh
+    silent: true
