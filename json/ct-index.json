@@ -582,6 +582,45 @@
     },
     "notes": []
 },
+"authelia": {
+  "name": "Authelia",
+  "slug": "authelia",
+  "categories": [
+    6
+  ],
+  "date_created": "2025-02-24",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 9091,
+  "documentation": "https://www.authelia.com/integration/deployment/bare-metal/",
+  "website": "https://www.authelia.com/",
+  "logo": "https://www.authelia.com/images/branding/logo.png",
+  "description": "Authelia is an open-source authentication and authorization server and portal fulfilling the identity and access management (IAM) role of information security in providing multi-factor authentication and single sign-on (SSO) for your applications via a web portal. It acts as a companion for common reverse proxies.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/authelia.sh",
+      "resources": {
+        "cpu": 1,
+        "ram": 512,
+        "hdd": 2,
+        "os": "Debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": "authelia",
+    "password": "authelia"
+  },
+  "notes": [
+    {
+      "text": "During installation, you will have to input your domain (ex. domain.com). Authelia will use auth.domain.com",
+      "type": "info"
+    }
+  ]
+},
 "authentik": {
     "name": "authentik",
     "slug": "authentik",
@@ -835,6 +874,40 @@
         }
     ]
 },
+"boltdiy": {
+  "name": "bolt.diy",
+  "slug": "boltdiy",
+  "categories": [
+    20
+  ],
+  "date_created": "2025-02-23",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 5173,
+  "documentation": "https://stackblitz-labs.github.io/bolt.diy/",
+  "website": "https://github.com/stackblitz-labs/bolt.diy",
+  "logo": "https://github.com/stackblitz-labs/bolt.diy/raw/refs/heads/main/icons/logo-text.svg",
+  "description": "The official open source version of Bolt.new (previously known as oTToDev and bolt.new ANY LLM), which allows you to choose the LLM that you use for each prompt! Currently, you can use OpenAI, Anthropic, Ollama, OpenRouter, Gemini, LMStudio, Mistral, xAI, HuggingFace, DeepSeek, or Groq models - and it is easily extended to use any other model supported by the Vercel AI SDK!",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/boltdiy.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 3072,
+        "hdd": 6,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": []
+},
 "bookstack": {
     "name": "BookStack",
     "slug": "bookstack",
@@ -907,6 +980,40 @@
         "password": null
     },
     "notes": []
+},
+"bytestash": {
+  "name": "ByteStash",
+  "slug": "bytestash",
+  "categories": [
+    20
+  ],
+  "date_created": "2025-02-27",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 3000,
+  "documentation": "https://github.com/jordan-dalby/ByteStash/wiki",
+  "website": "https://github.com/jordan-dalby/ByteStash",
+  "logo": "https://raw.githubusercontent.com/jordan-dalby/ByteStash/refs/heads/main/client/public/logo192.png",
+  "description": "ByteStash is a self-hosted web application designed to store, organise, and manage your code snippets efficiently. With support for creating, editing, and filtering snippets, ByteStash helps you keep track of your code in one secure place.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/bytestash.sh",
+      "resources": {
+        "cpu": 1,
+        "ram": 1024,
+        "hdd": 4,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": []
 },
 "caddy": {
     "name": "Caddy",
@@ -2848,6 +2955,49 @@
     },
     "notes": []
 },
+"hev-socks5-server": {
+  "name": "hev-socks5-server",
+  "slug": "hev-socks5-server",
+  "categories": [
+    4
+  ],
+  "date_created": "2025-02-23",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 1080,
+  "documentation": null,
+  "website": "https://github.com/heiher/hev-socks5-server",
+  "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/405px-Tux.svg.png",
+  "description": "HevSocks5Server is a simple, lightweight socks5 server.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/hev-socks5-server.sh",
+      "resources": {
+        "cpu": 1,
+        "ram": 512,
+        "hdd": 2,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "Default credentials: `cat /root/hev.creds`",
+      "type": "info"
+    },
+    {
+      "text": "Config stored at `/etc/hev-socks5-server/main.yml`",
+      "type": "info"
+    }
+  ]
+},
 "hivemq": {
     "name": "HiveMQ CE",
     "slug": "hivemq",
@@ -3558,6 +3708,45 @@
     },
     "notes": []
   },
+"jupyternotebook": {
+    "name": "Jupyter Notebook",
+    "slug": "jupyter-notebook",
+    "categories": [
+      20
+    ],
+    "date_created": "2025-02-24",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 8888,
+    "documentation": "https://jupyter-notebook.readthedocs.io/en/stable/",
+    "website": "https://jupyter.org/",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/800px-Jupyter_logo.svg.png",
+    "description": "The Jupyter Notebook is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and narrative text. Uses include: data cleaning and transformation, numerical simulation, statistical modeling, data visualization, machine learning, and much more.",
+    "install_methods": [
+      {
+        "type": "default",
+        "script": "ct/jupyternotebook.sh",
+        "resources": {
+          "cpu": 2,
+          "ram": 2048,
+          "hdd": 4,
+          "os": "ubuntu",
+          "version": "24.04"
+        }
+      }
+    ],
+    "default_credentials": {
+      "username": null,
+      "password": null
+    },
+    "notes": [
+        {
+            "text": "To get the token to access the Jupyter Notebook, run the following command: jupyter notebook list.",
+            "type": "info"
+        }
+    ]
+},
 "kavita": {
     "name": "Kavita",
     "slug": "kavita",
@@ -5557,6 +5746,49 @@
     },
     "notes": []
 },
+"outline": {
+    "name": "Outline",
+    "slug": "outline",
+    "categories": [
+        12
+    ],
+    "date_created": "2025-02-26",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 3000,
+    "documentation": "https://docs.getoutline.com/s/hosting/",
+    "website": "https://www.getoutline.com",
+    "logo": "https://www.getoutline.com/images/logo.svg",
+    "description": "The fastest knowledge base for growing teams. Beautiful, realtime collaborative, feature packed, and markdown compatible. It’s time to get your team’s knowledge organized.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/outline.sh",
+            "resources": {
+                "cpu": 2,
+                "ram": 4096,
+                "hdd": 8,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+        {
+            "text": "After installation finishes, application will do a database migration so web UI might be unavailable for a minute or two. Also you need to manually add authentication and/or enable HTTPS.",
+            "type": "info"
+        },
+        {
+            "text": "Configuration file is at: `/opt/outline/.env`. Modify to suit your environment.",
+            "type": "info"
+        }
+    ]
+},
 "overseerr": {
     "name": "Overseerr",
     "slug": "overseerr",
@@ -5877,6 +6109,88 @@
         "password": null
     },
     "notes": []
+},
+"pelican-panel": {
+  "name": "Pelican Panel",
+  "slug": "pelican-panel",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-02-27",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 80,
+  "documentation": "https://pelican.dev/docs/panel/getting-started",
+  "website": "https://pelican.dev/",
+  "logo": "https://pelican.dev/img/logo.png",
+  "description": "Pelican Panel is a web-based control panel for managing game and application servers. It provides an intuitive interface to start, stop, configure, and monitor servers easily. It works alongside Pelican Wings, a lightweight daemon that handles server deployments and resource management.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/pelican-panel.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 1024,
+        "hdd": 4,
+        "os": "Debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "Database credentials: `cat ~/pelican-panel.creds`",
+      "type": "info"
+    },
+    {
+      "text": "Step 5 of the Panel installer can be skipped because it has already been set up by the script.",
+      "type": "info"
+    }
+  ]
+},
+"pelican-wings": {
+  "name": "Pelican Wings",
+  "slug": "pelican-wings",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-02-27",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": null,
+  "documentation": "https://pelican.dev/docs/wings/install",
+  "website": "https://pelican.dev/",
+  "logo": "https://pelican.dev/img/logo.png",
+  "description": "Pelican Wings is Pelican's server control plane, built for the rapidly changing gaming industry and designed to be highly performant and secure. Wings provides an HTTP API allowing you to interface directly with running server instances, fetch server logs, generate backups, and control all aspects of the server lifecycle.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/pelican-wings.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 4096,
+        "hdd": 8,
+        "os": "Debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "After installation, you need to use the Auto Deploy command generated by Pelican Panel and, after running the command, restart the Wings service with `systemctl restart wings.service`",
+      "type": "info"
+    }
+  ]
 },
 "petio": {
     "name": "Petio",
@@ -8569,6 +8883,40 @@
         }
     ]
 },
+"victoriametrics": {
+  "name": "VictoriaMetrics",
+  "slug": "victoria",
+  "categories": [
+    8
+  ],
+  "date_created": "2025-02-24",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 8428,
+  "documentation": "https://docs.victoriametrics.com/",
+  "website": "https://victoriametrics.com/",
+  "logo": "https://marketplace-assets.digitalocean.com/logos/victoriametrics-victoriametricss.png",
+  "description": "VictoriaMetrics is a fast, cost-saving, and scalable solution for monitoring and managing time series data. It delivers high performance and reliability, making it an ideal choice for businesses of all sizes.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/victoriametrics.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 16,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": []
+},
 "vikunja": {
     "name": "Vikunja",
     "slug": "vikunja",
@@ -8777,6 +9125,45 @@
             "type": "info"
         }
     ]
+},
+"wger": {
+  "name": "wger",
+  "slug": "wger",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-02-24",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 3000,
+  "documentation": "https://wger.readthedocs.io/en/latest/index.html#",
+  "website": "https://wger.de",
+  "logo": "https://avatars.githubusercontent.com/u/17430347?s=48&v=4",
+  "description": "wger (ˈvɛɡɐ) Workout Manager is a free, open source web application that helps you manage your personal workouts, weight and diet plans and can also be used as a simple gym management utility. It offers a REST API as well, for easy integration with other projects and tools.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/wger.sh",
+      "resources": {
+        "cpu": 1,
+        "ram": 1024,
+        "hdd": 6,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": "admin",
+    "password": "adminadmin"
+  },
+  "notes": [
+    {
+    "text": "Enable proxy support by uncommenting this line in `/home/wger/src/settings.py` and pointing it to your URL: `# CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'https://my.domain.example.com']`, then restart the service `systemctl restart wger`.",
+    "type": "info"
+    }
+  ]
 },
 "whisparr": {
     "name": "Whisparr",
