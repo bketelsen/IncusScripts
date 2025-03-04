@@ -57,7 +57,7 @@ After=network-online.target
 User=minio-user
 Group=minio-user
 EnvironmentFile=-/etc/default/minio
-ExecStart=/usr/local/bin/minio server /data
+ExecStart=/usr/local/bin/minio server --console-address ":9001" /data
 Restart=always
 RestartSec=5
 LimitNOFILE=65536
@@ -75,4 +75,5 @@ msg_info "Cleaning up"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

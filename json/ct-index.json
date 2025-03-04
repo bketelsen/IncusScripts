@@ -441,6 +441,45 @@
     },
     "notes": []
 },
+"apache-tomcat": {
+  "name": "Apache Tomcat",
+  "slug": "apache-tomcat",
+  "categories": [
+    10
+  ],
+  "date_created": "2025-03-04",
+  "type": "ct",
+  "updateable": false,
+  "privileged": false,
+  "interface_port": 8080,
+  "documentation": "https://cwiki.apache.org/confluence/display/TOMCAT",
+  "website": "https://tomcat.apache.org/",
+  "logo": "https://tomcat.apache.org/res/images/tomcat.png",
+  "description": "Apache Tomcat is an open-source application server that runs Java Servlets and JavaServer Pages (JSP). It allows developers to deploy and manage Java web applications by handling HTTP requests and serving dynamic content. Tomcat is widely used for lightweight web applications and supports various Java EE features like WebSockets and JNDI.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/apache-tomcat.sh",
+      "resources": {
+        "cpu": 1,
+        "ram": 1024,
+        "hdd": 5,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "User can select which Adoptium JDK should be used for the selected Tomcat version (9, 10.1 or 11). ",
+      "type": "info"
+    }
+  ]
+},
 "apt-cacher-ng": {
     "name": "Apt-Cacher-NG",
     "slug": "apt-cacher-ng",
@@ -2881,6 +2920,49 @@
         "password": "admin"
     },
     "notes": []
+},
+"habitica": {
+  "name": "Habitica",
+  "slug": "habitica",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-03-03",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 8080,
+  "documentation": "https://github.com/HabitRPG/habitica/wiki",
+  "website": "https://habitica.com/",
+  "logo": "https://github.com/HabitRPG/habitica/raw/refs/heads/develop/website/client/src/assets/svg/logo.svg",
+  "description": "Habitica is an open-source habit-building program that treats your life like a role-playing game. Level up as you succeed, lose HP as you fail, and earn Gold to buy weapons and armor!",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/habitica.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 4096,
+        "hdd": 8,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "It takes a minute or two after installation for web UI to start, please be patient.",
+      "type": "info"
+    },
+    {
+      "text": "Config file is at `/opt/habitica/config.json`",
+      "type": "info"
+    }
+  ]
 },
 "headscale": {
     "name": "Headscale",
@@ -7067,6 +7149,84 @@
         }
     ]
 },
+"pterodactyl-panel": {
+  "name": "Pterodactyl Panel",
+  "slug": "pterodactyl-panel",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-03-04",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 80,
+  "documentation": "https://pterodactyl.io/panel/1.0/getting_started.html",
+  "website": "https://pterodactyl.io",
+  "logo": "https://pterodactyl.io/logos/pterry.svg",
+  "description": "Pterodactyl Panel is a web-based control panel for managing game and application servers. It provides an intuitive interface to start, stop, configure, and monitor servers easily. It works alongside Pterodactyl Wings, a lightweight daemon that handles server deployments and resource management.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/pterodactyl-panel.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 1024,
+        "hdd": 4,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "Show login and database credentials: `cat ~/pterodactyl-panel.creds`",
+      "type": "info"
+    }
+  ]
+},
+"pterodactyl-wings": {
+  "name": "Pterodactyl Wings",
+  "slug": "pterodactyl-wings",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-03-04",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": null,
+  "documentation": "https://pterodactyl.io/wings/1.0/installing.html",
+  "website": "https://pterodactyl.io",
+  "logo": "https://pterodactyl.io/logos/pterry.svg",
+  "description": "Pterodactyl Wings is Pterodactyl's server control plane, built for the rapidly changing gaming industry and designed to be highly performant and secure. Wings provides an HTTP API allowing you to interface directly with running server instances, fetch server logs, generate backups, and control all aspects of the server lifecycle.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/pterodactyl-wings.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 4096,
+        "hdd": 8,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "After installation, you need to use the Auto Deploy command generated by Pterodactyl Panel and, after running the command, restart the Wings service with `systemctl restart wings.service`",
+      "type": "info"
+    }
+  ]
+},
 "qbittorrent": {
     "name": "qBittorrent",
     "slug": "qbittorrent",
@@ -7386,6 +7546,49 @@
             "type": "info"
         }
     ]
+},
+"revealjs": {
+  "name": "RevealJS",
+  "slug": "revealjs",
+  "categories": [
+    12
+  ],
+  "date_created": "2025-03-04",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 8000,
+  "documentation": "https://github.com/hakimel/reveal.js/wiki",
+  "website": "https://github.com/hakimel/reveal.js",
+  "logo": "https://static.slid.es/reveal/logo-v1/reveal-white-text.svg",
+  "description": "reveal.js is an open source HTML presentation framework. It's a tool that enables anyone with a web browser to create fully-featured and beautiful presentations for free.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/revealjs.sh",
+      "resources": {
+        "cpu": 1,
+        "ram": 1024,
+        "hdd": 4,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "Config file is at `/opt/revealjs/gulpfile.js`. Check the documentation for more information.",
+      "type": "info"
+    },
+    {
+      "text": "LiveReload is on port: 35729",
+      "type": "info"
+    }
+  ]
 },
 "rtsptoweb": {
     "name": "RTSPtoWeb",
@@ -9125,6 +9328,40 @@
             "type": "info"
         }
     ]
+},
+"web-check": {
+  "name": "Web-Check",
+  "slug": "web-check",
+  "categories": [
+    4
+  ],
+  "date_created": "2025-02-27",
+  "type": "ct",
+  "updateable": false,
+  "privileged": false,
+  "interface_port": 3000,
+  "documentation": "https://github.com/Lissy93/web-check/blob/master/.github/README.md",
+  "website": "https://github.com/lissy93/web-check",
+  "logo": "https://raw.githubusercontent.com/Lissy93/web-check/refs/heads/master/.github/web-check-logo.png",
+  "description": "Get an insight into the inner-workings of a given website: uncover potential attack vectors, analyse server architecture, view security configurations, and learn what technologies a site is using.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/web-check.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 12,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": []
 },
 "wger": {
   "name": "wger",

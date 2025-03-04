@@ -2,8 +2,8 @@
 
 # Copyright (c) 2021-2025 community-scripts ORG
 # Author: quantumryuu
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://firefly-iii.org/
 
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
@@ -84,6 +84,7 @@ cat <<EOF >/etc/apache2/sites-available/firefly.conf
 
 </VirtualHost>
 EOF
+chown www-data:www-data /opt/firefly/storage/oauth-*.key
 $STD a2enmod php8.4
 $STD a2enmod rewrite
 $STD a2ensite firefly.conf
