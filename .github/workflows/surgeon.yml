@@ -32,5 +32,5 @@ jobs:
       run: ./misc/index.sh
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
-      commit-message: |
-        sync: pull upstream changes
+      with: 
+        commit-message: sync: pull upstream changes
