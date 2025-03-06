@@ -3,6 +3,7 @@
 # Copyright (c) 2021-2025 community-scripts ORG
 # Author: dave-yap
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://zitadel.com/
 
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
@@ -46,7 +47,6 @@ msg_info "Installing Zitadel"
 RELEASE=$(curl -si https://github.com/zitadel/zitadel/releases/latest | grep location: | cut -d '/' -f 8 | tr -d '\r')
 wget -qc https://github.com/zitadel/zitadel/releases/download/$RELEASE/zitadel-linux-amd64.tar.gz -O - | tar -xz
 mv zitadel-linux-amd64/zitadel /usr/local/bin
-echo "${RELEASE}" >"/opt/zitadel_version.txt"
 msg_ok "Installed Zitadel"
 
 msg_info "Setting up Zitadel Environments"
@@ -126,7 +126,7 @@ zitadel start-from-init --masterkeyFile /opt/zitadel/.masterkey --config /opt/zi
 sleep 60
 kill $(lsof -i | awk '/zitadel/ {print $2}' | head -n1)
 useradd zitadel
-echo -e "$(zitadel -v | grep -oP 'v\d+\.\d+\.\d+')" > /opt/Zitadel_version.txt
+echo "${RELEASE}" >/opt/${APPLICATION}_version.txt
 msg_ok "Zitadel initialized"
 
 msg_info "Set ExternalDomain to current IP and restart Zitadel"

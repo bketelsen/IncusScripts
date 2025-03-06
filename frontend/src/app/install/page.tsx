@@ -69,6 +69,9 @@ export default function Page() {
               <p>
                 Optionally, you can move the binary to a directory in your PATH.
               </p>
+              <p>
+                On TrueNAS, the binary must live in a user-created dataset. TrueNAS prevents scripts and applications from being executed from $HOME.
+              </p>
             </div>
             <div>
             <Link href="https://github.com/bketelsen/IncusScripts/releases">

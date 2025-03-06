@@ -6,12 +6,10 @@ vars:
   GREETING: Hello, World!
   BRANCHNAME: $(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)
 
-tasks:
-  default:
-    cmds:
-      - echo "{{.BRANCHNAME}}"
-    silent: true
+includes:
+  cli: ./cli 
 
+tasks:
   update:
     cmds:
       - echo "Running surgeon..."

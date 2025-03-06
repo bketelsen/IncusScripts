@@ -2,8 +2,8 @@
 
 # Copyright (c) 2021-2025 tteck
 # Author: tteck (tteckster)
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://js.wiki/
 
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
@@ -20,13 +20,17 @@ $STD apt-get install -y \
   mc \
   git \
   ca-certificates \
-  gnupg
+  gnupg \
+  build-essential \
+  python3 \
+  g++ \
+  make
 msg_ok "Installed Dependencies"
 
 msg_info "Setting up Node.js Repository"
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" >/etc/apt/sources.list.d/nodesource.list
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" >/etc/apt/sources.list.d/nodesource.list
 msg_ok "Set up Node.js Repository"
 
 msg_info "Setting up PostgreSQL Repository"
@@ -37,11 +41,13 @@ msg_ok "Set up PostgreSQL Repository"
 msg_info "Installing Node.js"
 $STD apt-get update
 $STD apt-get install -y nodejs
+$STD npm install --global yarn
+$STD npm install -g node-gyp
 msg_ok "Installed Node.js"
 
 msg_info "Set up PostgreSQL"
 $STD apt-get install -y postgresql-17
-DB_NAME="wikijs_db"
+DB_NAME="wiki"
 DB_USER="wikijs_user"
 DB_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)"
 $STD sudo -u postgres psql -c "CREATE ROLE $DB_USER WITH LOGIN PASSWORD '$DB_PASS';"
@@ -65,7 +71,12 @@ wget -q "https://github.com/Requarks/wiki/archive/refs/tags/v${RELEASE}.tar.gz" 
 tar -xzf "$temp_file"
 mv wiki-${RELEASE} /opt/wikijs
 mv /opt/wikijs/config.sample.yml /opt/wikijs/config.yml
-sed -i -E "s|(host: ).*|\1localhost|; s|(port: ).*|\15432|; s|(user: ).*|\1$DB_USER|; s|(pass: ).*|\1$DB_PASS|; s|(db: ).*|\1$DB_NAME|; s|(ssl: ).*|\1false|" /opt/wikijs/config.yml
+sed -i -E 's|^( *user: ).*|\1'"$DB_USER"'|' /opt/wikijs/config.yml
+sed -i -E 's|^( *pass: ).*|\1'"$DB_PASS"'|' /opt/wikijs/config.yml
+cd /opt/wikijs
+export NODE_OPTIONS="--max-old-space-size=2048"
+$STD yarn install --ignore-engines
+$STD yarn build
 echo "${RELEASE}" >"/opt/${APPLICATION}_version.txt"
 msg_ok "Installed Wiki.js"
 
@@ -77,7 +88,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node server
+ExecStart=/usr/bin/yarn start
 Restart=always
 User=root
 Environment=NODE_ENV=production
@@ -86,7 +97,7 @@ WorkingDirectory=/opt/wikijs
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable --now wikijs
+systemctl enable -q --now wikijs
 msg_ok "Created Service"
 
 motd_ssh

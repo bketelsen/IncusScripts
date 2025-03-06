@@ -2,8 +2,8 @@
 
 # Copyright (c) 2021-2025 tteck
 # Author: tteck (tteckster)
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://www.zigbee2mqtt.io/
 
 source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
 color
@@ -50,7 +50,7 @@ mv zigbee2mqtt-${RELEASE} /opt/zigbee2mqtt
 cd /opt/zigbee2mqtt/data
 mv configuration.example.yaml configuration.yaml
 cd /opt/zigbee2mqtt
-$STD pnpm install --frozen-lockfile
+$STD pnpm install --no-frozen-lockfile
 $STD pnpm build
 msg_ok "Installed Zigbee2MQTT"
 

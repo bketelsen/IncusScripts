@@ -2,8 +2,8 @@
 
 # Copyright (c) 2021-2025 tteck
 # Author: tteck (tteckster)
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://www.wireguard.com/
 
 source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
 color
@@ -22,7 +22,6 @@ msg_ok "Installed Dependencies"
 
 msg_info "Installing WireGuard"
 $STD apt-get install -y wireguard wireguard-tools net-tools iptables
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confnew" install -y iptables-persistent &>/dev/null
 $STD netfilter-persistent reload
 msg_ok "Installed WireGuard"

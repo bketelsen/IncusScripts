@@ -2,8 +2,8 @@
 
 # Copyright (c) 2021-2025 tteck
 # Author: tteck (tteckster)
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://pi-hole.net/
 
 source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
 color
@@ -141,7 +141,7 @@ server=8.8.8.8
 server=8.8.4.4
 EOF
 
-  sed -i -E "s|^(upstreams =).*|\1 [\"127.0.0.1#5335\", \"8.8.4.4\"]|" /etc/pihole/pihole.toml
+  sed -i -E '/^\s*upstreams\s*=\s*\[/,/^\s*\]/c\  upstreams = [\n    "127.0.0.1#5335",\n    "8.8.4.4"\n  ]' /etc/pihole/pihole.toml
   systemctl enable -q --now unbound
   systemctl restart pihole-FTL.service
   msg_ok "Installed Unbound"

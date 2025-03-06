@@ -2,8 +2,8 @@
 
 # Copyright (c) 2021-2025 community-scripts ORG
 # Author: wimb0
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://github.com/NLnetLabs/unbound
 
 source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
 color
@@ -61,7 +61,7 @@ EOF
 
 touch /var/log/unbound.log
 chown unbound:unbound /var/log/unbound.log
-
+sleep 5
 systemctl restart unbound
 msg_ok "Installed Unbound"
 
