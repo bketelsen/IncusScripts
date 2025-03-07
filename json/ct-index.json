@@ -3572,6 +3572,45 @@
     },
     "notes": []
   },
+"inventree": {
+  "name": "InvenTree",
+  "slug": "inventree",
+  "categories": [
+    25
+  ],
+  "date_created": "2025-03-06",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 80,
+  "documentation": "https://docs.inventree.org/en/latest/",
+  "website": "https://inventree.org",
+  "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/inventree.svg",
+  "description": "InvenTree is an open-source inventory management system which provides intuitive parts management and stock control. It is designed to be lightweight and easy to use for SME or hobbyist applications.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/inventree.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 6,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": "admin",
+    "password": "`cat /etc/inventree/admin_password.txt`"
+  },
+  "notes": [
+    {
+      "text": "Please read the documentation for your configuration needs.",
+      "type": "info"
+    }
+  ]
+},
 "iobroker": {
     "name": "ioBroker",
     "slug": "iobroker",
@@ -5292,6 +5331,45 @@
     },
     "notes": []
 },
+"node-red": {
+    "name": "Node-Red",
+    "slug": "node-red",
+    "categories": [
+        16
+    ],
+    "date_created": "2024-05-02",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 1880,
+    "documentation": null,
+    "website": "https://nodered.org/",
+    "logo": "https://github.com/home-assistant/brands/blob/master/custom_integrations/nodered/icon.png?raw=true",
+    "description": "Node-RED is a visual programming tool that allows developers and non-developers alike to easily wire together hardware devices, APIs, and online services to create custom applications. It provides a visual interface for building workflows, making it easy to create and modify complex integrations without having to write any code. Node-RED is used in a wide range of applications, from simple automations to complex integrations, and is known for its simplicity, versatility, and ease of use.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/node-red.sh",
+            "resources": {
+                "cpu": 1,
+                "ram": 1024,
+                "hdd": 4,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+        {
+            "text": "To install themes, type `update` in the LXC console.",
+            "type": "info"
+        }
+    ]
+},
 "nodebb": {
   "name": "NodeBB",
   "slug": "nodebb",
@@ -5331,45 +5409,6 @@
       "type": "warning"
     }
   ]
-},
-"node-red": {
-    "name": "Node-Red",
-    "slug": "node-red",
-    "categories": [
-        16
-    ],
-    "date_created": "2024-05-02",
-    "type": "ct",
-    "updateable": true,
-    "privileged": false,
-    "interface_port": 1880,
-    "documentation": null,
-    "website": "https://nodered.org/",
-    "logo": "https://github.com/home-assistant/brands/blob/master/custom_integrations/nodered/icon.png?raw=true",
-    "description": "Node-RED is a visual programming tool that allows developers and non-developers alike to easily wire together hardware devices, APIs, and online services to create custom applications. It provides a visual interface for building workflows, making it easy to create and modify complex integrations without having to write any code. Node-RED is used in a wide range of applications, from simple automations to complex integrations, and is known for its simplicity, versatility, and ease of use.",
-    "install_methods": [
-        {
-            "type": "default",
-            "script": "ct/node-red.sh",
-            "resources": {
-                "cpu": 1,
-                "ram": 1024,
-                "hdd": 4,
-                "os": "debian",
-                "version": "12"
-            }
-        }
-    ],
-    "default_credentials": {
-        "username": null,
-        "password": null
-    },
-    "notes": [
-        {
-            "text": "To install themes, type `update` in the LXC console.",
-            "type": "info"
-        }
-    ]
 },
 "notifiarr": {
     "name": "Notifiarr",
@@ -6878,40 +6917,6 @@
     },
     "notes": []
 },
-"prometheus": {
-    "name": "Prometheus",
-    "slug": "prometheus",
-    "categories": [
-        9
-    ],
-    "date_created": "2024-05-02",
-    "type": "ct",
-    "updateable": true,
-    "privileged": false,
-    "interface_port": 9090,
-    "documentation": null,
-    "website": "https://prometheus.io/",
-    "logo": "https://raw.githubusercontent.com/loganmarchione/homelab-svg-assets/main/assets/prometheus.svg",
-    "description": "Prometheus is widely used to monitor the performance and health of various infrastructure components and applications, and trigger alerts based on predefined rules. It has a multi-dimensional data model and supports various data sources and exporters, making it an extremely flexible and scalable monitoring solution.",
-    "install_methods": [
-        {
-            "type": "default",
-            "script": "ct/prometheus.sh",
-            "resources": {
-                "cpu": 1,
-                "ram": 2048,
-                "hdd": 4,
-                "os": "debian",
-                "version": "12"
-            }
-        }
-    ],
-    "default_credentials": {
-        "username": null,
-        "password": null
-    },
-    "notes": []
-},
 "prometheus-paperless-ngx-exporter": {
     "name": "Prometheus Paperless NGX Exporter",
     "slug": "prometheus-paperless-ngx-exporter",
@@ -6954,6 +6959,40 @@
             "type": "info"
         }
     ]
+},
+"prometheus": {
+    "name": "Prometheus",
+    "slug": "prometheus",
+    "categories": [
+        9
+    ],
+    "date_created": "2024-05-02",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 9090,
+    "documentation": null,
+    "website": "https://prometheus.io/",
+    "logo": "https://raw.githubusercontent.com/loganmarchione/homelab-svg-assets/main/assets/prometheus.svg",
+    "description": "Prometheus is widely used to monitor the performance and health of various infrastructure components and applications, and trigger alerts based on predefined rules. It has a multi-dimensional data model and supports various data sources and exporters, making it an extremely flexible and scalable monitoring solution.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/prometheus.sh",
+            "resources": {
+                "cpu": 1,
+                "ram": 2048,
+                "hdd": 4,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": []
 },
 "prowlarr": {
     "name": "Prowlarr",
