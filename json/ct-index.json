@@ -2401,6 +2401,46 @@
     },
     "notes": []
 },
+"fluid-calendar": {
+  "name": "Fluid-Calendar",
+  "slug": "fluid-calendar",
+  "categories": [
+    19,
+    0
+  ],
+  "date_created": "2025-03-12",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 3000,
+  "documentation": "https://github.com/dotnetfactory/fluid-calendar/tree/main/docs",
+  "website": "https://github.com/dotnetfactory/fluid-calendar",
+  "logo": "https://raw.githubusercontent.com/dotnetfactory/fluid-calendar/refs/heads/main/src/app/favicon.ico",
+  "description": "The open-source intelligent calendar that adapts to your workflow. Experience seamless task scheduling powered by AI, designed to make your time management effortless.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/fluid-calendar.sh",
+      "resources": {
+        "cpu": 3,
+        "ram": 4096,
+        "hdd": 7,
+        "os": "Debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "Creds: cat ~/fluid-calendar.creds",
+      "type": "info"
+    }
+  ]
+},
 "forgejo": {
     "name": "Forgejo",
     "slug": "forgejo",
@@ -6608,6 +6648,49 @@
     },
     "notes": []
 },
+"plant-it": {
+  "name": "Plant-it",
+  "slug": "plant-it",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-03-11",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 3000,
+  "documentation": "https://docs.plant-it.org/latest/",
+  "website": "https://plant-it.org/",
+  "logo": "https://raw.githubusercontent.com/MDeLuise/plant-it/refs/heads/main/images/plant-it-logo.png",
+  "description": "Plant-it is a self-hosted, open-source app designed to help users manage and track plant care. It allows users to add plants, log activities like watering, fertilizing, and pruning, set reminders, and upload photos for visual tracking. The app includes a database of over 400,000 plant species, offering detailed care information such as optimal growing conditions and maintenance tips.\n\nUsers can organize their plant collection, monitor growth, and share data with others. The app is free to use and works on Android, iOS, and the web.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/plant-it.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 5,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "This Script use Adoptium JDK 21 - Sometimes the installation of these takes a while",
+      "type": "info"
+    },
+    {
+      "text": "After the initial start, the backend requires approx. 1-2 minutes boot time",
+      "type": "info"
+    }
+  ]
+},
 "plex": {
     "name": "Plex Media Server",
     "slug": "plex",
@@ -7808,6 +7891,53 @@
         "password": null
     },
     "notes": []
+},
+"seafile": {
+  "name": "Seafile",
+  "slug": "Seafile",
+  "categories": [
+    12
+  ],
+  "date_created": "2025-03-11",
+  "type": "ct",
+  "updateable": false,
+  "privileged": false,
+  "interface_port": 8000,
+  "documentation": "https://manual.seafile.com/11.0/deploy",
+  "website": "https://seafile.com",
+  "logo": "https://manual.seafile.com/11.0/media/seafile-transparent-1024.png",
+  "description": "Seafile is an open source file sync and share platform, focusing on reliability and performance.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/seafile.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 20,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "Application credentials: `cat ~/seafile.creds`",
+      "type": "info"
+    },
+    {
+      "text": "Change STORAGE_DIR value in `external-storage.sh` and run `bash external-storage.sh` to use your defined storage instead of internal.",
+      "type": "info"
+    },
+    {
+      "text": "Execute `~/domain.sh <HTTPS://YOUR_DOMAIN.COM_HERE>` to enable access to Seafile via your domain",
+      "type": "info"
+    }
+  ]
 },
 "searxng": {
   "name": "SearXNG",
