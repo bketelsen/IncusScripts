@@ -29,7 +29,11 @@ $STD apt-get install -y --no-install-recommends \
   sudo \
   git \
   make \
-  mc
+  mc \
+  pkg-config \
+  libxmlsec1-dev \
+  libxml2-dev \
+  libxmlsec1-openssl
 msg_ok "Installed Dependencies"
 
 msg_info "Setup Python3"
@@ -54,13 +58,13 @@ $STD npm install -g yarn
 msg_ok "Installed Node.js"
 
 msg_info "Installing Tandoor (Patience)"
-$STD git clone https://github.com/vabene1111/recipes.git -b master /opt/tandoor
+$STD git clone https://github.com/TandoorRecipes/recipes -b master /opt/tandoor
 mkdir -p /opt/tandoor/{config,api,mediafiles,staticfiles}
 $STD pip3 install -r /opt/tandoor/requirements.txt
 cd /opt/tandoor/vue
 $STD yarn install
 $STD yarn build
-wget -q https://raw.githubusercontent.com/vabene1111/recipes/develop/.env.template -O /opt/tandoor/.env
+wget -q https://raw.githubusercontent.com/TandoorRecipes/recipes/develop/.env.template -O /opt/tandoor/.env
 DB_NAME=db_recipes
 DB_USER=tandoor
 DB_ENCODING=utf8
