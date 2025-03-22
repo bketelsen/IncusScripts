@@ -15,13 +15,14 @@ update_os
 
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
-    curl \
-    sudo \
-    mc \
-    sqlite3 \
-    rclone \
-    tzdata \
-    ca-certificates
+  curl \
+  sudo \
+  mc \
+  sqlite3 \
+  rclone \
+  tzdata \
+  ca-certificates \
+  build-essential
 msg_ok "Installed Dependencies"
 
 msg_info "Setting up Golang"
@@ -34,17 +35,20 @@ ln -sf /usr/local/go/bin/go /usr/local/bin/go
 set -o pipefail
 msg_ok "Setup Golang"
 
-msg_info "Setup ${APPLICATION}"
-temp_file2=$(mktemp)
+msg_info "Setup ${APPLICATION} (Patience)"
+temp_file=$(mktemp)
 RELEASE=$(curl -s https://api.github.com/repos/StarFleetCPTN/GoMFT/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
-wget -q "https://github.com/StarFleetCPTN/GoMFT/archive/refs/tags/v${RELEASE}.tar.gz" -O $temp_file2
-tar -xzf $temp_file2
+wget -q "https://github.com/StarFleetCPTN/GoMFT/archive/refs/tags/v${RELEASE}.tar.gz" -O $temp_file
+tar -xzf $temp_file
 mv GoMFT-${RELEASE}/ /opt/gomft
 cd /opt/gomft
+$STD go mod download
 $STD go install github.com/a-h/templ/cmd/templ@latest
-wget -q "https://github.com/StarFleetCPTN/GoMFT/releases/download/v${RELEASE}/gomft-v${RELEASE}-linux-amd64" -O gomft
 $STD $HOME/go/bin/templ generate
-chmod +x gomft
+export CGO_ENABLED=1
+export GOOS=linux
+$STD go build -o gomft
+chmod +x /opt/gomft/gomft
 JWT_SECRET_KEY=$(openssl rand -base64 24 | tr -d '/+=')
 
 cat <<EOF >/opt/gomft/.env
@@ -93,7 +97,7 @@ motd_ssh
 customize
 
 msg_info "Cleaning up"
-rm -f $temp_file $temp_file2
+rm -f $temp_file
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
