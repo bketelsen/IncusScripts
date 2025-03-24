@@ -15,9 +15,6 @@ update_os
 
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
-  curl \
-  sudo \
-  mc \
   make \
   net-tools \
   ffmpeg \
@@ -47,4 +44,5 @@ rm -f /tmp/nxwitness-server-$RELEASE-linux_x64.deb
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon
