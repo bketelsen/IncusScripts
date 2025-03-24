@@ -13,11 +13,7 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt-get install -y \
-    curl \
-    mc \
-    sudo \
-    openjdk-17-jre
+$STD apt-get install -y openjdk-17-jre
 msg_ok "Installed Dependencies"
 
 msg_info "Setup Jenkins"
@@ -34,4 +30,5 @@ msg_info "Cleaning up"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

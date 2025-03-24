@@ -5,7 +5,7 @@
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://grafana.com/
 
-source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
+source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
@@ -30,4 +30,5 @@ msg_ok "Installed Grafana"
 
 motd_ssh
 customize
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

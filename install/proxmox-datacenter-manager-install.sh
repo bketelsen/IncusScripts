@@ -14,11 +14,7 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt-get install -y \
-    curl \
-    sudo \
-    gpg \
-    mc 
+$STD apt-get install -y gpg
 msg_ok "Installed Dependencies"
 
 msg_info "Installing Proxmox Datacenter Manager"
@@ -37,4 +33,5 @@ msg_info "Cleaning up"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

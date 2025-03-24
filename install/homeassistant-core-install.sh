@@ -15,10 +15,7 @@ update_os
 
 msg_info "Installing Dependencies (Patience)"
 $STD apt-get install -y \
-  curl \
   git \
-  sudo \
-  mc \
   gnupg \
   ca-certificates \
   bluez \
@@ -100,4 +97,5 @@ msg_info "Cleaning up"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

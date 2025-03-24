@@ -15,12 +15,9 @@ update_os
 
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
-  curl \
-  sudo \
   make \
   gnupg \
   ca-certificates \
-  mc \
   unzip \
   python3.11-venv
 msg_ok "Installed Dependencies"
@@ -80,4 +77,5 @@ rm -rf /opt/v${RELEASE}.zip
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon

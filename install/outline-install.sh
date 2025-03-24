@@ -15,13 +15,10 @@ update_os
 
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
-curl \
-sudo \
-mc \
-gnupg \
-mkcert \
-git \
-redis
+    gnupg \
+    mkcert \
+    git \
+    redis
 msg_ok "Installed Dependencies"
 
 msg_info "Setting up Node.js Repository"
@@ -104,4 +101,5 @@ rm -rf $temp_file
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
+
 # Modified by surgeon https://github.com/bketelsen/surgeon
