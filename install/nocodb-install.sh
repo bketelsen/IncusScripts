@@ -16,7 +16,7 @@ update_os
 msg_info "Installing NocoDB"
 mkdir -p /opt/nocodb
 cd /opt/nocodb
-curl -s http://get.nocodb.com/linux-x64 -o nocodb -L
+curl -fsSL http://get.nocodb.com/linux-x64 -o nocodb -L
 chmod +x nocodb
 msg_ok "Installed NocoDB"
 
@@ -34,7 +34,7 @@ ExecStart=/opt/nocodb/./nocodb
 
 [Install]
 WantedBy=multi-user.target" >$service_path
-systemctl enable -q --now nocodb.service &>/dev/null
+systemctl enable -q --now nocodb
 msg_ok "Created Service"
 
 motd_ssh

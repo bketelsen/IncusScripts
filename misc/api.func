@@ -40,7 +40,7 @@ post_to_api() {
 EOF
 )
 
-  RESPONSE=$(curl -s -w "%{http_code}" -L -X POST "$API_URL" --post301 --post302 \
+  RESPONSE=$(curl -fsSL -w "%{http_code}" -L -X POST "$API_URL" --post301 --post302 \
     -H "Content-Type: application/json" \
     -d "$JSON_PAYLOAD") || true
 }
@@ -88,7 +88,7 @@ post_to_api_vm() {
 EOF
 )
 
-  RESPONSE=$(curl -s -w "%{http_code}" -L -X POST "$API_URL" --post301 --post302 \
+  RESPONSE=$(curl -fsSL -w "%{http_code}" -L -X POST "$API_URL" --post301 --post302 \
     -H "Content-Type: application/json" \
     -d "$JSON_PAYLOAD") || true
 }
@@ -116,7 +116,7 @@ post_update_to_api() {
 EOF
 )
    
-  RESPONSE=$(curl -s -w "%{http_code}" -L -X POST "$API_URL" --post301 --post302 \
+  RESPONSE=$(curl -fsSL -w "%{http_code}" -L -X POST "$API_URL" --post301 --post302 \
     -H "Content-Type: application/json" \
     -d "$JSON_PAYLOAD") || true
 

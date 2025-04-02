@@ -5,7 +5,7 @@
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://radarr.video/
 
-source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
+source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
@@ -20,8 +20,9 @@ msg_ok "Installed Dependencies"
 msg_info "Installing Radarr"
 mkdir -p /var/lib/radarr/
 chmod 775 /var/lib/radarr/
-$STD wget --content-disposition 'https://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
-$STD tar -xvzf Radarr.master.*.tar.gz
+cd /var/lib/radarr/
+$STD curl -fsSL 'https://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64' -o radarr.tar.gz
+$STD tar -xvzf radarr.tar.gz
 mv Radarr /opt
 chmod 775 /opt/Radarr
 msg_ok "Installed Radarr"
