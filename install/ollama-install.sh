@@ -15,18 +15,19 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt-get install -y gpg
-$STD apt-get install -y git
-$STD apt-get install -y build-essential
-$STD apt-get install -y pkg-config
-$STD apt-get install -y cmake
+$STD apt-get install -y \
+  gpg \
+  git \
+  build-essential \
+  pkg-config \
+  cmake
 msg_ok "Installed Dependencies"
 
 msg_info "Installing Golang"
 set +o pipefail
 temp_file=$(mktemp)
-golang_tarball=$(curl -s https://go.dev/dl/ | grep -oP 'go[\d\.]+\.linux-amd64\.tar\.gz' | head -n 1)
-wget -q https://golang.org/dl/"$golang_tarball" -O "$temp_file"
+golang_tarball=$(curl -fsSL https://go.dev/dl/ | grep -oP 'go[\d\.]+\.linux-amd64\.tar\.gz' | head -n 1)
+curl -fsSL "https://golang.org/dl/${golang_tarball}" -o "$temp_file"
 tar -C /usr/local -xzf "$temp_file"
 ln -sf /usr/local/go/bin/go /usr/local/bin/go
 rm -f "$temp_file"
@@ -85,7 +86,7 @@ RestartSec=3
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable -q --now ollama.service
+systemctl enable -q --now ollama
 msg_ok "Created Service"
 
 motd_ssh
@@ -95,5 +96,4 @@ msg_info "Cleaning up"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
-
 # Modified by surgeon https://github.com/bketelsen/surgeon

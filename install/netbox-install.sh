@@ -18,10 +18,6 @@ $STD apt-get install -y \
   apache2 \
   redis-server \
   postgresql \
-  python3 \
-  python3-pip \
-  python3-venv \
-  python3-dev \
   build-essential \
   libxml2-dev \
   libxslt1-dev \
@@ -30,6 +26,14 @@ $STD apt-get install -y \
   libssl-dev \
   zlib1g-dev
 msg_ok "Installed Dependencies"
+
+msg_info "Installing Python"
+$STD apt-get install -y \
+  python3 \
+  python3-pip \
+  python3-venv \
+  python3-dev
+msg_ok "Installed Python"  
 
 msg_info "Setting up PostgreSQL"
 DB_NAME=netbox
@@ -47,8 +51,8 @@ msg_ok "Set up PostgreSQL"
 
 msg_info "Installing NetBox (Patience)"
 cd /opt
-RELEASE=$(curl -s https://api.github.com/repos/netbox-community/netbox/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
-wget -q "https://github.com/netbox-community/netbox/archive/refs/tags/v${RELEASE}.zip"
+RELEASE=$(curl -fsSL https://api.github.com/repos/netbox-community/netbox/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
+curl -fsSL "https://github.com/netbox-community/netbox/archive/refs/tags/v${RELEASE}.zip" -o $(basename "https://github.com/netbox-community/netbox/archive/refs/tags/v${RELEASE}.zip")
 unzip -q "v${RELEASE}.zip"
 mv /opt/netbox-${RELEASE}/ /opt/netbox
 
