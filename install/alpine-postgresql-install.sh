@@ -3,7 +3,7 @@
 # Copyright (c) 2021-2025 community-scripts ORG
 # Author: MickLesk (CanbiZ)
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
-# Source: https://mariadb.org/
+# Source: https://www.postgresql.org/
 
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
@@ -13,21 +13,25 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
-$STD apk add \
-  gpg \
-  sudo
-msg_ok "Installed Dependencies"
+msg_info "Installing PostgreSQL"
+$STD apk add --no-cache postgresql16 postgresql16-contrib postgresql16-openrc sudo
+msg_ok "Installed PostgreSQL"
 
-msg_info "Installing MariaDB"
-$STD apk add --no-cache mariadb mariadb-client
-$STD rc-update add mariadb default
-msg_ok "Installed MariaDB"
+msg_info "Enabling PostgreSQL Service"
+$STD rc-update add postgresql default
+msg_ok "Enabled PostgreSQL Service"
 
-msg_info "Configuring MariaDB"
-mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql >/dev/null 2>&1
-$STD rc-service mariadb start
-msg_ok "MariaDB Configured"
+msg_info "Starting PostgreSQL"
+$STD rc-service postgresql start
+msg_ok "Started PostgreSQL"
+
+msg_info "Configuring PostgreSQL for External Access"
+conf_file="/etc/postgresql16/postgresql.conf"
+hba_file="/etc/postgresql16/pg_hba.conf"
+sed -i 's/^#listen_addresses =.*/listen_addresses = '\''*'\''/' "$conf_file"
+sed -i '/^host\s\+all\s\+all\s\+127.0.0.1\/32\s\+md5/ s/.*/host all all 0.0.0.0\/0 md5/' "$hba_file"
+$STD rc-service postgresql restart
+msg_ok "Configured and Restarted PostgreSQL"
 
 read -r -p "Would you like to install Adminer with lighttpd? <y/N>: " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
@@ -41,8 +45,8 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
     php83-curl \
     php83-gd \
     php83-mbstring \
-    php83-mysqli \
-    php83-mysqlnd \
+    php83-pdo \
+    php83-pgsql \
     php83-openssl \
     php83-zip \
     php83-session \
@@ -64,8 +68,5 @@ fi
 
 motd_ssh
 customize
-
-msg_info "Cleaning up"
-msg_ok "Cleaned"
 
 # Modified by surgeon https://github.com/bketelsen/surgeon
