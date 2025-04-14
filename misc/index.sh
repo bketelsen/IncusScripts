@@ -5,7 +5,7 @@
 # including only the files that have a "type"="ct" key-value pair
 
 # get the current directory
-DIR="$( pwd )"
+DIR="$(pwd)"
 
 # get the json directory
 JSON_DIR="$DIR/json"
@@ -20,11 +20,10 @@ rm -f $INDEX_FILE
 JSON_FILES=$(ls $JSON_DIR)
 
 # create the index file
-echo "{" > $INDEX_FILE
+echo "{" >$INDEX_FILE
 
 # loop through the json files
-for JSON_FILE in $JSON_FILES
-do
+for JSON_FILE in $JSON_FILES; do
   # get the type of the json file
   JSON_TYPE=$(jq -r '.type' $JSON_DIR/$JSON_FILE)
 
@@ -36,8 +35,7 @@ do
     # write the contents to the index file
     # removing ".json" from the filename
 
-    echo "\"${JSON_FILE%.*}\": $JSON_CONTENT," >> $INDEX_FILE
-
+    echo "\"${JSON_FILE%.*}\": $JSON_CONTENT," >>$INDEX_FILE
 
     #echo "\"$JSON_FILE\": $JSON_CONTENT," >> $INDEX_FILE
   fi
@@ -47,6 +45,6 @@ done
 sed -i '$ s/.$//' $INDEX_FILE
 
 # close the json object
-echo "}" >> $INDEX_FILE
+echo "}" >>$INDEX_FILE
 
-
+jq --sort-keys . "$INDEX_FILE" >"$INDEX_FILE".tmp && mv "$INDEX_FILE".tmp "$INDEX_FILE"
