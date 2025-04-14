@@ -26,16 +26,16 @@ jobs:
         go-version: '1.24'
 
     - name: Tools
-      run: go install github.com/bketelsen/surgeon@v0.2.4
+      run: go install github.com/bketelsen/surgeon/cmd/surgeon@v0.2.7
 
     - name: surgeon
-      run: surgeon -v
+      run: surgeon
 
     - name: index
       run: ./misc/index.sh
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
-      with: 
+      with:
         commit-message: pull upstream changes
         branch-suffix: random
         delete-branch: true
