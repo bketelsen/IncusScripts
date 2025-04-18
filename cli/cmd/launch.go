@@ -27,6 +27,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -34,6 +35,7 @@ import (
 
 	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/log"
+	"github.com/lxc/incus/v6/shared/api"
 	"github.com/spf13/cobra"
 
 	"github.com/charmbracelet/huh"
@@ -94,10 +96,57 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 
 	}
 
+	var isTrueNAS bool
+
 	var enableSSH bool
 	var addGPU bool
 	var profiles []string
 	var validBridges []string
+
+	isTrueNAS, err = c.global.client.IsTrueNAS(c.Command().Context())
+	if err != nil {
+		log.Error("Error checking if TrueNAS:", "error", err)
+		return err
+	}
+	if isTrueNAS {
+		profiles, err := c.global.client.ProfileNames(c.Command().Context())
+		if err != nil {
+			log.Error("Error getting profiles:", "error", err)
+			return err
+		}
+		found := false
+		for _, p := range profiles {
+			if p == "scriptcli-storage" {
+				found = true
+				log.Debug("Found TrueNAS profile", "profile", p)
+				launchSettings.Profiles = append(launchSettings.Profiles, p)
+			}
+		}
+		if !found {
+			log.Info("No TrueNAS profiles found")
+			p := api.ProfilesPost{
+				Name: "scriptcli-storage",
+				ProfilePut: api.ProfilePut{
+					Config:      map[string]string{},
+					Description: "TrueNAS storage profile for script-cli",
+					Devices: map[string]map[string]string{
+						"root": {
+							"path": "/",
+							"pool": "default",
+							"type": "disk",
+						},
+					},
+				},
+			}
+			err := c.global.client.ProfileCreate(c.Command().Context(), p)
+			if err != nil {
+				log.Error("Error getting profiles:", "error", err)
+				return err
+			}
+			launchSettings.Profiles = append(launchSettings.Profiles, "scriptcli-storage")
+
+		}
+	}
 
 	proceed, err := launchForm(app, application.Description, accessible)
 	if err != nil {
@@ -453,8 +502,10 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	if disableSecureBoot(application.InstallMethods[launchSettings.InstallMethod].Resources.OS) {
 		launchSettings.VMSecureBoot = false
 	}
+
 	if launchSettings.VM {
 		deviceOverrides["root"] = map[string]string{"size": launchSettings.VMRootDiskSize}
+
 		extraConfigs["limits.cpu"] = strconv.Itoa(launchSettings.CPU)
 		extraConfigs["limits.memory"] = launchSettings.RAM
 		if !launchSettings.VMSecureBoot {
@@ -560,6 +611,14 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		out, _ := WelcomeMessage(*application, launchSettings)
 		output, _ := glamour.Render(out, "dark")
 		fmt.Print(output)
+		if isTrueNAS {
+			log.Info("Removing setup script from instance...")
+			err = exec.Command("incus", "config", "set", launchSettings.Name, "environment.FUNCTIONS_FILE_PATH", "").Run()
+			if err != nil {
+				fmt.Println("Error removing functions file path:", err)
+				return err
+			}
+		}
 	} else {
 		log.Error("Instance creation cancelled")
 	}
