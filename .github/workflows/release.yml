@@ -32,7 +32,6 @@ jobs:
       # More assembly might be required: Docker logins, GPG, etc.
       # It all depends on your needs.
       - name: Run GoReleaser
-        working-directory: ./cli
         uses: goreleaser/goreleaser-action@v6
         with:
           # either 'goreleaser' (default) or 'goreleaser-pro'
@@ -40,6 +39,7 @@ jobs:
           # 'latest', 'nightly', or a semver
           version: "~> v2"
           args: release --clean
+          workdir: ./cli
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
