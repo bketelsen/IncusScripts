@@ -7,6 +7,7 @@ import (
 	"path"
 
 	"github.com/bketelsen/inclient"
+	goversion "github.com/bketelsen/toolbox/go-version"
 	"github.com/charmbracelet/log"
 	incus "github.com/lxc/incus/v6/client"
 	config "github.com/lxc/incus/v6/shared/cliconfig"
@@ -18,17 +19,37 @@ import (
 var repository string
 var app *cobra.Command
 
-const version = "0.0.1"
+var (
+	version   = ""
+	commit    = ""
+	treeState = ""
+	date      = ""
+	builtBy   = ""
+)
+var bversion = buildVersion(version, commit, date, builtBy, treeState)
 
-var commit string
-
-// Version returns the current version string
-func Version() string {
-	clen := 0
-	if len(commit) > 7 {
-		clen = 8
-	}
-	return fmt.Sprintf("v%s %s", version, commit[:clen])
+// buildVersion builds the version info for the application
+func buildVersion(version, commit, date, builtBy, treeState string) goversion.Info {
+	return goversion.GetVersionInfo(
+		goversion.WithAppDetails("scripts-cli", "Incus Helper-Scripts", "https://bketelsen.github.io/IncusScripts/"),
+		func(i *goversion.Info) {
+			if commit != "" {
+				i.GitCommit = commit
+			}
+			if treeState != "" {
+				i.GitTreeState = treeState
+			}
+			if date != "" {
+				i.BuildDate = date
+			}
+			if version != "" {
+				i.GitVersion = version
+			}
+			if builtBy != "" {
+				i.BuiltBy = builtBy
+			}
+		},
+	)
 }
 
 func main() {
@@ -47,7 +68,7 @@ Support information at https://github.com/bketelsen/IncusScripts/
 	app.SilenceErrors = true
 	app.CompletionOptions = cobra.CompletionOptions{HiddenDefaultCmd: true}
 
-	app.Version = Version()
+	app.Version = bversion.String()
 
 	// Global flags
 	globalCmd := cmdGlobal{cmd: app}
