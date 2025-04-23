@@ -37,5 +37,5 @@ jobs:
       uses: peter-evans/create-pull-request@v7
       with:
         commit-message: pull upstream changes
-        branch-suffix: random
+        branch: surgeon-patch
         delete-branch: true
