@@ -7,20 +7,22 @@ before:
   hooks:
     # You may remove this if you don't use go modules.
     - go mod tidy
-    # you may remove this if you don't need go generate
-    - go generate ./...
+
 
 builds:
   - env:
       - CGO_ENABLED=0
     goos:
       - linux
+      - darwin
     goarch:
       - amd64
       - arm64
     main: ./cmd
     binary: scripts-cli
     id: scripts-cli
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{ .CommitDate }} -X main.builtBy=goreleaser
 
 archives:
   - formats: [ 'tar.gz' ]
@@ -39,10 +41,40 @@ archives:
 
 changelog:
   sort: asc
+  use: github
+  format: "{{ .SHA }}: {{ .Message }}{{ with .AuthorUsername }} (@{{ . }}){{ end }}"
   filters:
     exclude:
-      - "^docs:"
       - "^test:"
+      - "^test\\("
+      - "^chore: update$"
+      - "^chore: docs$"
+      - "^docs: update$"
+      - "^chore: typo$"
+      - "^chore: auto-update generated files$"
+      - "^chore\\(deps\\): "
+      - "^(build|ci): "
+      - "merge conflict"
+      - "merge conflict"
+      - Merge pull request
+      - Merge remote-tracking branch
+      - Merge branch
+      - go mod tidy
+  groups:
+    - title: "New Features"
+      regexp: '^.*?feat(\(.+\))??!?:.+$'
+      order: 100
+    - title: "Security updates"
+      regexp: '^.*?sec(\(.+\))??!?:.+$'
+      order: 150
+    - title: "Bug fixes"
+      regexp: '^.*?(fix|refactor)(\(.+\))??!?:.+$'
+      order: 200
+    - title: "Documentation updates"
+      regexp: ^.*?docs?(\(.+\))??!?:.+$
+      order: 400
+    - title: Other work
+      order: 9999
 
 release:
   footer: >-
