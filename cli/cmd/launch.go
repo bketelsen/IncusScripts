@@ -143,6 +143,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 				log.Error("Error getting profiles:", "error", err)
 				return err
 			}
+			log.Info("Created Incus profile", "profile", p.Name)
 			launchSettings.Profiles = append(launchSettings.Profiles, "scriptcli-storage")
 
 		}
@@ -495,6 +496,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 
 	// Cacher
 	extraConfigs["environment.CACHER"] = "no"
+	extraConfigs["environment.DEBIAN_FRONTEND"] = "noninteractive"
 
 	// Disable ipv6
 	extraConfigs["environment.DISABLEIPV6"] = "yes" // todo: make this a form option
@@ -528,8 +530,9 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		}
 	}
 	// Function script
-	extraConfigs["environment.FUNCTIONS_FILE_PATH"] = string(funcScript)
+	//extraConfigs["environment.FUNCTIONS_FILE_PATH"] = string(funcScript)
 
+	extraConfigs["environment.FUNCTIONS_FILE_PATH"] = "/install.func"
 	createInstance := func() {
 		// create the instance
 		err := c.global.client.Launch(launchSettings.Image, launchSettings.Name, launchSettings.Profiles, extraConfigs, deviceOverrides, launchSettings.Network, launchSettings.VM, false)
@@ -600,8 +603,48 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 			fmt.Println("Error downloading install script:", err)
 			os.Exit(1)
 		}
+
+		dir, err := os.MkdirTemp("", "scriptcli-installfunc")
+		if err != nil {
+			fmt.Println("Error creating temp dir:", err)
+			os.Exit(1)
+		}
+		defer os.RemoveAll(dir)
+		// write the install script to a file
+		modifiedScript := []byte("#!/bin/env bash\n")
+		modifiedScript = append(modifiedScript, funcScript...)
+		modifiedScript = append(modifiedScript, []byte("\n")...)
+		err = os.WriteFile(filepath.Join(dir, "install.func"), modifiedScript, 0644)
+		if err != nil {
+			fmt.Println("Error writing install script:", err)
+			os.Exit(1)
+		}
+		// push the install script to the instance
+		log.Info("Adding installation functions to instance...")
+		err = exec.Command("incus", "file", "push", filepath.Join(dir, "install.func"), launchSettings.Name+"/install.func").Run()
+		if err != nil {
+			fmt.Println("Error pushing functions file:", err)
+			return err
+		}
+		// push the install script to the instance
+		log.Info("Making installation functions executable...")
+		err = exec.Command("incus", "exec", launchSettings.Name, "--", "chmod", "+x", "/install.func").Run()
+		if err != nil {
+			fmt.Println("Error making functions file executable:", err)
+			os.Exit(0)
+		}
+		log.Info("Running installer...")
+
+		insFunc := string(installFunc)
+		insFunc = strings.ReplaceAll(insFunc, "/dev/stdin <<<", "")
 		// run installer
-		err = c.global.client.ExecInteractive([]string{launchSettings.Name, "bash", "-c", string(installFunc)}, []string{}, 0, 0, "", os.Stdin, os.Stdout, os.Stderr)
+		command := exec.Command("incus", "exec", launchSettings.Name, "--", "bash", "-c", string(insFunc))
+		command.Stdin = os.Stdin
+		command.Stdout = os.Stdout
+		command.Stderr = os.Stderr
+		command.Run()
+
+		// err = c.global.client.ExecInteractive([]string{launchSettings.Name, "bash", "-c", string(insFunc)}, []string{}, 0, 0, "", os.Stdin, os.Stdout, os.Stderr)
 		if err != nil {
 			fmt.Println("Error executing installer:", err)
 			os.Exit(1)
@@ -618,6 +661,12 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 				fmt.Println("Error removing functions file path:", err)
 				return err
 			}
+		}
+		log.Info("Removing setup script from instance...")
+		err = exec.Command("incus", "config", "set", launchSettings.Name, "environment.DEBIAN_FRONTEND", "").Run()
+		if err != nil {
+			fmt.Println("Error removing functions file path:", err)
+			return err
 		}
 	} else {
 		log.Error("Instance creation cancelled")
