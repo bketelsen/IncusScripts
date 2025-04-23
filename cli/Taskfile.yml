@@ -6,10 +6,20 @@ vars:
   GREETING: Hello, World!
 
 tasks:
+  dev:
+    dir: cli
+    desc: Setup tools
+    cmds:
+      - go install github.com/caarlos0/svu@latest
+      - go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.0.2
+      - go install mvdan.cc/gofumpt@latest
   build:
+    vars:
+      NEXT:
+        sh: svu n
     dir: cli
     cmds:
-      - CGO_ENABLED=0 go build -v -trimpath -ldflags="-X github.com/bketelsen/IncusScripts/cli/cmd/main.commit=$(git rev-parse HEAD)" -o scripts-cli ./cmd
+      - CGO_ENABLED=0 go build -v -trimpath -ldflags="-X main.commit=$(git rev-parse HEAD) -X main.version={{.NEXT}}-dev" -o scripts-cli ./cmd
     silent: true
   install:
     dir: cli
@@ -31,3 +41,18 @@ tasks:
     cmds:
       - goreleaser check
     silent: true
+  release:
+    desc: Create a new tag
+    vars:
+      NEXT:
+        sh: svu n
+    prompt: "This will release {{.NEXT}}. Continue?"
+    preconditions:
+      - sh: '[ $(git symbolic-ref --short HEAD) = "main" ]'
+        msg: Not on main branch
+      - sh: "[ $(git status --porcelain=2 | wc -l) = 0 ]"
+        msg: "Git is dirty"
+    cmds:
+      - git tag {{.NEXT}}
+      - echo {{.NEXT}}
+      - git push origin --tags
