@@ -9,7 +9,7 @@ buildGo123Module rec {
 
   src = ./../cli;
 
-  vendorHash = "sha256-iPxabKi33tJH8xQ9gPr9XmT0LcBwxtonnXJlJMnYxjw=";
+  vendorHash = "sha256-iMHDKK72l8fSpSPnZAkdy1GQ6u3wZzea3p45iRG63ho=";
   subPackages = ["." "./cmd"];
 
   nativeBuildInputs = [
