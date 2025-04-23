@@ -20,9 +20,6 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.24'
-
-    - name: Tools
-      run: go install github.com/a-h/templ/cmd/templ@latest
     - name: Build
       working-directory: ./cli/cmd
       run: go build -v .
