@@ -15,11 +15,5 @@ type cmdGlobal struct {
 
 	ret int
 
-	flagHelp    bool
 	flagHelpAll bool
-
-	flagLogDebug   bool
-	flagLogVerbose bool
-	flagQuiet      bool
-	flagVersion    bool
 }
