@@ -45,13 +45,31 @@ type Resources struct {
 }
 
 func (r Resources) GetOS() string {
+	if r.OS == "" {
+		return "debian"
+	}
 	return strings.ToLower(r.OS)
 }
 func (r Resources) GetVersion() string {
+	if r.Version == "" {
+		return "12"
+	}
 	return strings.ToLower(r.Version)
 }
 func (r Resources) Image() string {
-	return strings.ToLower(r.OS) + "/" + strings.ToLower(r.Version)
+	var os string
+	var version string
+	if r.OS == "" {
+		os = "debian"
+	} else {
+		os = strings.ToLower(r.OS)
+	}
+	if r.Version == "" {
+		version = "12"
+	} else {
+		version = strings.ToLower(r.Version)
+	}
+	return strings.ToLower(os) + "/" + strings.ToLower(version)
 }
 
 type InstallMethods struct {

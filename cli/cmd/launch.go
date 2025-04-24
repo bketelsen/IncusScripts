@@ -182,7 +182,8 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 			}
 		}
 	}
-
+	launchSettings.Image = "images:" + application.InstallMethods[0].Resources.Image()
+	log.Info("Selected image", "image", launchSettings.Image)
 	if advanced {
 
 		// select install method
@@ -195,8 +196,8 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 					huh.NewSelect[int]().
 						Title("Choose OS Option").
 						Options(
-							huh.NewOption(application.InstallMethods[0].Resources.OS, 0),
-							huh.NewOption(application.InstallMethods[1].Resources.OS, 1),
+							huh.NewOption(application.InstallMethods[0].Resources.GetOS(), 0),
+							huh.NewOption(application.InstallMethods[1].Resources.GetOS(), 1),
 						).
 						Value(&installMethod),
 				),
@@ -486,10 +487,10 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	extraConfigs["environment.APPLICATION"] = application.Name
 
 	// OS Type
-	extraConfigs["environment.PCT_OSTYPE"] = application.InstallMethods[launchSettings.InstallMethod].Resources.OS
+	extraConfigs["environment.PCT_OSTYPE"] = application.InstallMethods[launchSettings.InstallMethod].Resources.GetOS()
 
 	// OS Version
-	extraConfigs["environment.PCT_OSVERSION"] = application.InstallMethods[launchSettings.InstallMethod].Resources.Version
+	extraConfigs["environment.PCT_OSVERSION"] = application.InstallMethods[launchSettings.InstallMethod].Resources.GetVersion()
 
 	// tz
 	extraConfigs["environment.tz"] = "Etc/UTC"
@@ -501,7 +502,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	// Disable ipv6
 	extraConfigs["environment.DISABLEIPV6"] = "yes" // todo: make this a form option
 
-	if disableSecureBoot(application.InstallMethods[launchSettings.InstallMethod].Resources.OS) {
+	if disableSecureBoot(application.InstallMethods[launchSettings.InstallMethod].Resources.GetOS()) {
 		launchSettings.VMSecureBoot = false
 	}
 
@@ -516,7 +517,7 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	}
 
 	var funcScript []byte
-	if application.InstallMethods[launchSettings.InstallMethod].Resources.OS == "alpine" {
+	if application.InstallMethods[launchSettings.InstallMethod].Resources.GetOS() == "alpine" {
 		funcScript, err = downloadRaw(repository, "misc", "alpine-install.func")
 		if err != nil {
 			fmt.Println("download error:", err)
@@ -533,6 +534,8 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	//extraConfigs["environment.FUNCTIONS_FILE_PATH"] = string(funcScript)
 
 	extraConfigs["environment.FUNCTIONS_FILE_PATH"] = "/install.func"
+	log.Info("Preparing image", "image", launchSettings.Image)
+
 	createInstance := func() {
 		// create the instance
 		err := c.global.client.Launch(launchSettings.Image, launchSettings.Name, launchSettings.Profiles, extraConfigs, deviceOverrides, launchSettings.Network, launchSettings.VM, false)
