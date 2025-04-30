@@ -10,14 +10,15 @@ else
   echo -n "DIRECT"
 fi
 EOF
-  chmod +x /usr/local/bin/apt-proxy-detect.sh
+    chmod +x /usr/local/bin/apt-proxy-detect.sh
   fi
   $STD apt-get update
   $STD apt-get -o Dpkg::Options::="--force-confold" -y dist-upgrade
   rm -rf /usr/lib/python3.*/EXTERNALLY-MANAGED
-  $STD apt-get install -y wget logrotate curl
+  $STD apt-get install -y wget logrotate curl unzip sudo mc gnupg2
   if [[ "$INSTALL_SSH" == "yes" ]]; then
     $STD apt-get install -y openssh-server
   fi
+  source <(curl -fsSL https://raw.githubusercontent.com/bketelsen/IncusScripts/main/misc/tools.func)
   msg_ok "Updated Container OS"
 }
