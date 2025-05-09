@@ -473,7 +473,7 @@ advanced_settings() {
       echo -e "${CONTAINERID}${BOLD}${DGN}Container ID: ${BGN}$CT_ID${CL}"
     fi
   else
-    exit
+    exit_script
   fi
 
   if CT_NAME=$(whiptail --backtitle "Incus Scripts" --inputbox "Set Hostname" 8 58 "$NSAPP" --title "HOSTNAME" 3>&1 1>&2 2>&3); then
@@ -524,15 +524,17 @@ advanced_settings() {
     exit_script
   fi
 
-  if BRG=$(whiptail --backtitle "Incus Scripts" --inputbox "Set a Bridge" 8 58 vmbr0 --title "BRIDGE" 3>&1 1>&2 2>&3); then
-    if [ -z "$BRG" ]; then
-      BRG="incusbr0"
-      echo -e "${BRIDGE}${BOLD}${DGN}Bridge: ${BGN}$BRG${CL}"
-    else
-      echo -e "${BRIDGE}${BOLD}${DGN}Bridge: ${BGN}$BRG${CL}"
-    fi
+  BRIDGES=$( ip link show | grep -oP '(?<=: )vmbr\d+' | sort)
+  if [[ -z "$BRIDGES" ]]; then
+    BRG="incusbr0"
+    echo -e "${BRIDGE}${BOLD}${DGN}Bridge: ${BGN}$BRG${CL}"
   else
-    exit_script
+    BRG=$(whiptail --backtitle "Incus Scripts" --menu "Select network bridge:" 15 40 6 $(echo "$BRIDGES" | awk '{print $0, "Bridge"}') 3>&1 1>&2 2>&3)
+      if [ -z "$BRG" ]; then
+        exit_script
+      else
+        echo -e "${BRIDGE}${BOLD}${DGN}Bridge: ${BGN}$BRG${CL}"
+      fi
   fi
 
   while true; do
@@ -1299,7 +1301,7 @@ silent() {
   fi
 }
 
-exit_script() {
+api_exit_script() {
   exit_code=$? # Capture the exit status of the last executed command
   #200 exit codes indicate error in create_lxc.sh
   #100 exit codes indicate error in install.func
@@ -1323,7 +1325,7 @@ exit_script() {
   fi
 }
 
-trap 'exit_script' EXIT
+trap 'api_exit_script' EXIT
 trap 'post_update_to_api "failed" "$BASH_COMMAND"' ERR
 trap 'post_update_to_api "failed" "INTERRUPTED"' SIGINT
 trap 'post_update_to_api "failed" "TERMINATED"' SIGTERM

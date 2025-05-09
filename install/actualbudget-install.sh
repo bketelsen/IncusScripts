@@ -13,51 +13,39 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
-$STD apt-get install -y \
-  tini \
-  gpg \
-  build-essential \
-  git
-msg_ok "Installed Dependencies"
-
-msg_info "Setting up Node.js Repository"
-mkdir -p /etc/apt/keyrings
-curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" >/etc/apt/sources.list.d/nodesource.list
-msg_ok "Set up Node.js Repository"
-
-msg_info "Installing Node.js"
-$STD apt-get update
-$STD apt-get install -y nodejs
-$STD npm install --global yarn
-msg_ok "Installed Node.js"
-
 msg_info "Installing Actual Budget"
-cd /opt || exit
+cd /opt
 RELEASE=$(curl -fsSL https://api.github.com/repos/actualbudget/actual/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
-curl -fsSL "https://github.com/actualbudget/actual/archive/refs/tags/v${RELEASE}.tar.gz" -o $(basename "https://github.com/actualbudget/actual/archive/refs/tags/v${RELEASE}.tar.gz")
-tar -xzf v"${RELEASE}".tar.gz
-mv actual-"${RELEASE}" /opt/actualbudget
-
+NODE_VERSION="22"
+install_node_and_modules
 mkdir -p /opt/actualbudget-data/{server-files,upload,migrate,user-files,migrations,config}
 chown -R root:root /opt/actualbudget-data
 chmod -R 755 /opt/actualbudget-data
 
-cat <<EOF >/opt/actualbudget-data/.env
-ACTUAL_UPLOAD_DIR=/opt/actualbudget-data/upload
-ACTUAL_DATA_DIR=/opt/actualbudget-data
-ACTUAL_SERVER_FILES_DIR=/opt/actualbudget-data/server-files
-ACTUAL_USER_FILES=/opt/actualbudget-data/user-files
-PORT=5006
-ACTUAL_TRUSTED_PROXIES="10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,127.0.0.1/32,::1/128,fc00::/7"
-ACTUAL_HTTPS_KEY=/opt/actualbudget/selfhost.key
-ACTUAL_HTTPS_CERT=/opt/actualbudget/selfhost.crt
+cat <<EOF >/opt/actualbudget-data/config.json
+{
+  "port": 5006,
+  "hostname": "::",
+  "serverFiles": "/opt/actualbudget-data/server-files",
+  "userFiles": "/opt/actualbudget-data/user-files",
+  "trustedProxies": [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16",
+    "127.0.0.0/8",
+    "::1/128",
+    "fc00::/7"
+  ],
+  "https": {
+    "key": "/opt/actualbudget/selfhost.key",
+    "cert": "/opt/actualbudget/selfhost.crt"
+  }
+}
 EOF
-cd /opt/actualbudget || exit
-export NODE_OPTIONS="--max_old_space_size=3072"
-$STD yarn install
-$STD yarn run build:server
+
+mkdir -p /opt/actualbudget
+cd /opt/actualbudget
+$STD npm install --location=global @actual-app/sync-server
 $STD openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout selfhost.key -out selfhost.crt <<EOF
 US
 California
@@ -81,8 +69,10 @@ Type=simple
 User=root
 Group=root
 WorkingDirectory=/opt/actualbudget
-EnvironmentFile=/opt/actualbudget-data/.env
-ExecStart=/usr/bin/yarn start:server
+Environment=ACTUAL_UPLOAD_FILE_SIZE_LIMIT_MB=20
+Environment=ACTUAL_UPLOAD_SYNC_ENCRYPTED_FILE_SYNC_SIZE_LIMIT_MB=50
+Environment=ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB=20
+ExecStart=/usr/bin/actual-server --config /opt/actualbudget-data/config.json
 Restart=always
 RestartSec=10
 
@@ -96,7 +86,6 @@ motd_ssh
 customize
 
 msg_info "Cleaning up"
-rm -rf /opt/v"${RELEASE}".tar.gz
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
