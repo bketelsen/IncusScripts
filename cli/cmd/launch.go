@@ -29,6 +29,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -122,30 +123,51 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 				launchSettings.Profiles = append(launchSettings.Profiles, p)
 			}
 		}
-		if !found {
-			log.Info("No TrueNAS profiles found")
-			// get the list of pools
-			pools, err := c.global.client.StorageList(c.Command().Context())
+
+		// get the list of pools
+		pools, err := c.global.client.StorageList(c.Command().Context())
+		if err != nil {
+			log.Error("Error getting incus storage pools:", "error", err)
+			return err
+		}
+		if len(pools) == 0 {
+			log.Error("No storage pools found")
+			return errors.New("no storage pools found")
+		}
+		// get the default pool
+		defaultPool := ""
+		for _, pool := range pools {
+			if pool.Name == "default" {
+				defaultPool = pool.Name
+				break
+			}
+		}
+		if defaultPool == "" {
+			defaultPool = pools[0].Name
+		}
+		if found {
+			scliProfile, err := c.global.client.Profile(c.Command().Context(), "scriptcli-storage")
 			if err != nil {
-				log.Error("Error getting incus storage pools:", "error", err)
+				log.Error("Error getting profile:", "error", err)
 				return err
 			}
-			if len(pools) == 0 {
-				log.Error("No storage pools found")
-				return errors.New("no storage pools found")
-			}
-			// get the default pool
-			defaultPool := ""
-			for _, pool := range pools {
-				if pool.Name == "default" {
-					defaultPool = pool.Name
-					break
+			rdev, ok := scliProfile.Devices["root"]
+			if ok {
+				if rdev["pool"] != defaultPool {
+					log.Error("wrong pool in profile", "incorrect pool", rdev["pool"], "correct pool", defaultPool)
+					log.Warn("Removing incorrect profile")
+					err = exec.Command("incus", "profile", "delete", "scriptcli-storage").Run()
+					if err != nil {
+						fmt.Println("Error deleting invalid storage profile:", err)
+						os.Exit(0)
+					}
+					found = false
 				}
 			}
-			if defaultPool == "" {
-				log.Info("No default storage pool found, defaulting to first pool")
-				defaultPool = pools[0].Name
-			}
+		}
+		if !found {
+			log.Info("No TrueNAS profiles found")
+
 			log.Debug("Using storage pool", "pool", defaultPool)
 			// create the profile
 			p := api.ProfilesPost{
@@ -168,7 +190,9 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 				return err
 			}
 			log.Info("Created Incus profile", "profile", p.Name)
-			launchSettings.Profiles = append(launchSettings.Profiles, "scriptcli-storage")
+			if !slices.Contains(launchSettings.Profiles, "default") {
+				launchSettings.Profiles = append(launchSettings.Profiles, "scriptcli-storage")
+			}
 
 		}
 	}
