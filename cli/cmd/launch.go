@@ -124,6 +124,30 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 		}
 		if !found {
 			log.Info("No TrueNAS profiles found")
+			// get the list of pools
+			pools, err := c.global.client.StorageList(c.Command().Context())
+			if err != nil {
+				log.Error("Error getting incus storage pools:", "error", err)
+				return err
+			}
+			if len(pools) == 0 {
+				log.Error("No storage pools found")
+				return errors.New("no storage pools found")
+			}
+			// get the default pool
+			defaultPool := ""
+			for _, pool := range pools {
+				if pool.Name == "default" {
+					defaultPool = pool.Name
+					break
+				}
+			}
+			if defaultPool == "" {
+				log.Info("No default storage pool found, defaulting to first pool")
+				defaultPool = pools[0].Name
+			}
+			log.Debug("Using storage pool", "pool", defaultPool)
+			// create the profile
 			p := api.ProfilesPost{
 				Name: "scriptcli-storage",
 				ProfilePut: api.ProfilePut{
@@ -132,13 +156,13 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 					Devices: map[string]map[string]string{
 						"root": {
 							"path": "/",
-							"pool": "default",
+							"pool": defaultPool,
 							"type": "disk",
 						},
 					},
 				},
 			}
-			err := c.global.client.ProfileCreate(c.Command().Context(), p)
+			err = c.global.client.ProfileCreate(c.Command().Context(), p)
 			if err != nil {
 				log.Error("Error getting profiles:", "error", err)
 				return err
