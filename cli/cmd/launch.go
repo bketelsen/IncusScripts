@@ -479,8 +479,10 @@ func (c *cmdLaunch) launch(app string, instanceName string) error {
 	extraConfigs := make(map[string]string)
 	deviceOverrides := make(map[string]map[string]string)
 	// enable nesting
-	extraConfigs["raw.lxc"] = "lxc.apparmor.profile=unconfined"
 	extraConfigs["security.nesting"] = "true"
+	extraConfigs["security.syscalls.intercept.mknod"] = "true"
+	extraConfigs["security.syscalls.intercept.setxattr"] = "true"
+
 	// set environment variables
 	// SSH Enable
 	if launchSettings.EnableSSH {
