@@ -1,15 +1,15 @@
 {
   lib,
-  buildGo123Module,
+  buildGo124Module,
   installShellFiles,
 }:
-buildGo123Module rec {
+buildGo124Module rec {
   pname = "scripts-cli";
   version = "latest";
 
   src = ./../cli;
 
-  vendorHash = "sha256-iMHDKK72l8fSpSPnZAkdy1GQ6u3wZzea3p45iRG63ho=";
+  vendorHash = "sha256-k2reefs1SRVwiOD5cqYBuNkAlOBCLyCzbUDxQNnnJhc=";
   subPackages = ["." "./cmd"];
 
   nativeBuildInputs = [
