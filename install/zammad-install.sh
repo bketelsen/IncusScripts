@@ -16,10 +16,8 @@ update_os
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
   git \
-  gpg \
   nginx \
-  apt-transport-https \
-  gnupg
+  apt-transport-https
 msg_ok "Installed Dependencies"
 
 msg_info "Setting up Elasticsearch"
@@ -30,7 +28,8 @@ $STD apt-get -y install elasticsearch
 echo "-Xms2g" >>/etc/elasticsearch/jvm.options
 echo "-Xmx2g" >>/etc/elasticsearch/jvm.options
 $STD /usr/share/elasticsearch/bin/elasticsearch-plugin install ingest-attachment -b
-systemctl -q restart elasticsearch
+systemctl enable -q elasticsearch
+systemctl restart -q elasticsearch
 msg_ok "Setup Elasticsearch"
 
 msg_info "Installing Zammad"
