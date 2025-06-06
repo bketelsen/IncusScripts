@@ -18,6 +18,7 @@ color() {
   BFR="\\r\\033[K"
   BOLD=$(echo "\033[1m")
   TAB="  "
+  TAB3="      "
 
   # System
   RETRY_NUM=10
@@ -138,13 +139,12 @@ network_check() {
 # This function updates the Container OS by running apt-get update and upgrade
 update_os() {
   msg_info "Updating Container OS"
-  $STD apk update
-  $STD apk upgrade
+  $STD apk -U upgrade
   msg_ok "Updated Container OS"
 
   msg_info "Installing core dependencies"
   $STD apk update
-  $STD apk add newt curl openssh nano mc ncurses
+  $STD apk add newt curl openssh nano mc ncurses gpg
   msg_ok "Core dependencies installed"
 }
 

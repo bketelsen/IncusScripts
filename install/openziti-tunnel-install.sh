@@ -13,10 +13,6 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
-$STD apt-get install -y gpg
-msg_ok "Installed Dependencies"
-
 msg_info "Installing openziti"
 mkdir -p --mode=0755 /usr/share/keyrings
 curl -sSLf https://get.openziti.io/tun/package-repos.gpg | gpg --dearmor -o /usr/share/keyrings/openziti.gpg
@@ -27,16 +23,16 @@ sed -i '0,/^ExecStart/ { /^ExecStart/ { n; s|^ExecStart.*|ExecStart=/opt/openzit
 systemctl daemon-reload
 msg_ok "Installed openziti"
 
-read -r -p "Please paste an identity enrollment token(JTW)" prompt
+read -r -p "${TAB3}Please paste an identity enrollment token(JTW)" prompt
 if [[ ${prompt} ]]; then
-    msg_info "Adding identity"
-    echo "${prompt}" >/opt/openziti/etc/identities/identity.jwt
-    chown ziti:ziti /opt/openziti/etc/identities/identity.jwt
-    systemctl enable -q --now ziti-edge-tunnel
-    msg_ok "Service Started"
+  msg_info "Adding identity"
+  echo "${prompt}" >/opt/openziti/etc/identities/identity.jwt
+  chown ziti:ziti /opt/openziti/etc/identities/identity.jwt
+  systemctl enable -q --now ziti-edge-tunnel
+  msg_ok "Service Started"
 else
-    systemctl enable -q ziti-edge-tunnel
-    msg_error "No identity provided; please place an identity file in /opt/openziti/etc/identities/ and restart the service"
+  systemctl enable -q ziti-edge-tunnel
+  msg_error "No identity provided; please place an identity file in /opt/openziti/etc/identities/ and restart the service"
 fi
 
 motd_ssh

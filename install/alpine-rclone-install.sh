@@ -15,8 +15,7 @@ update_os
 
 msg_info "Installing dependencies"
 $STD apk add --no-cache \
-  unzip \
-  apache2-utils
+  apache2-utils fuse3
 msg_ok "Installed dependencies"
 
 msg_info "Installing rclone"
@@ -27,7 +26,7 @@ curl -fsSL "https://github.com/rclone/rclone/releases/download/v${RELEASE}/rclon
 $STD unzip -j "$temp_file" '*/**' -d /opt/rclone
 cd /opt/rclone
 RCLONE_PASSWORD=$(head -c 16 /dev/urandom | xxd -p -c 16)
-$STD htpasswd -cb -B login.pwd admin "$RCLONE_PASSWORD"
+$STD htpasswd -cb -B /opt/login.pwd admin "$RCLONE_PASSWORD"
 {
   echo "rclone-Credentials"
   echo "rclone User Name: admin"
@@ -42,7 +41,7 @@ cat <<EOF >/etc/init.d/rclone
 #!/sbin/openrc-run
 description="rclone Service"
 command="/opt/rclone/rclone"
-command_args="rcd --rc-web-gui --rc-web-gui-no-open-browser --rc-addr :3000 --rc-htpasswd /opt/rclone/login.pwd"
+command_args="rcd --rc-web-gui --rc-web-gui-no-open-browser --rc-addr :3000 --rc-htpasswd /opt/login.pwd"
 command_background="true"
 command_user="root"
 pidfile="/var/run/rclone.pid"

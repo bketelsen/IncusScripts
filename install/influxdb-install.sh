@@ -16,7 +16,6 @@ update_os
 msg_info "Installing Dependencies"
 $STD apt-get install -y lsb-base
 $STD apt-get install -y lsb-release
-$STD apt-get install -y gnupg2
 msg_ok "Installed Dependencies"
 
 msg_info "Setting up InfluxDB Repository"
@@ -24,7 +23,7 @@ curl -fsSL "https://repos.influxdata.com/influxdata-archive_compat.key" | gpg --
 echo "deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main" >/etc/apt/sources.list.d/influxdata.list
 msg_ok "Set up InfluxDB Repository"
 
-read -r -p "Which version of InfluxDB to install? (1 or 2) " prompt
+read -r -p "${TAB3}Which version of InfluxDB to install? (1 or 2) " prompt
 if [[ $prompt == "2" ]]; then
   INFLUX="2"
 else
@@ -37,13 +36,13 @@ if [[ $INFLUX == "2" ]]; then
   $STD apt-get install -y influxdb2
 else
   $STD apt-get install -y influxdb
-  curl -fsSL "https://dl.influxdata.com/chronograf/releases/chronograf_1.10.1_amd64.deb" -o $(basename "https://dl.influxdata.com/chronograf/releases/chronograf_1.10.1_amd64.deb")
-  $STD dpkg -i chronograf_1.10.1_amd64.deb
+  curl -fsSL "https://dl.influxdata.com/chronograf/releases/chronograf_1.10.7_amd64.deb" -o "/chronograf_1.10.7_amd64.deb"
+  $STD dpkg -i chronograf_1.10.7_amd64.deb
 fi
 $STD systemctl enable --now influxdb
 msg_ok "Installed InfluxDB"
 
-read -r -p "Would you like to add Telegraf? <y/N> " prompt
+read -r -p "${TAB3}Would you like to add Telegraf? <y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
   msg_info "Installing Telegraf"
   $STD apt-get install -y telegraf
